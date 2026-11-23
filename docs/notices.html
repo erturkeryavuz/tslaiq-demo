@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notices &amp; Synthetic Data Provenance — TSLAIQ Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div>
+          <div class="brand-title-row">
+            <h1>TSLAIQ Demo</h1>
+            <span class="ticker-chip mono">NOTICES &amp; PROVENANCE</span>
+          </div>
+          <p class="brand-sub">Synthetic dataset provenance, non-affiliation, and research boundaries</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a class="btn-outline" href="index.html">&larr; Back to Analytics Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-workspace">
+    <div class="callout callout-warn">
+      <strong>Non-Affiliation, Synthetic Data &amp; Financial Disclaimer:</strong>
+      This static portfolio showcase by Ert&uuml;rk Eryavuz is not affiliated with, endorsed by, or sponsored by Tesla, Inc.,
+      Yahoo Finance, or any financial institution. All market series plotted in this demo (<code>SYNTH-EQ</code>) are
+      <strong>100% synthetic</strong>, generated algorithmically from a fixed seed with zero real market observations.
+      Nothing on this site constitutes financial advice or a live trading forecast.
+    </div>
+
+    <article class="panel-card">
+      <div class="panel-head-compact">
+        <h2>Asset &amp; Data Provenance Inventory</h2>
+        <span class="badge-tag badge-ok">100% Self-Contained</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Origin</th>
+              <th>License / Terms</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">data/synthetic_ohlcv.csv &amp; docs/data.js</td>
+              <td>Generated deterministically by <code>scripts/generate_synthetic_data.py</code> (seed <code>20261123</code>, ticker <code>SYNTH-EQ</code>, 1,500 weekday sessions).</td>
+              <td>Original synthetic demonstration data authored for this repository. Zero Yahoo Finance or real equity records included.</td>
+            </tr>
+            <tr>
+              <td class="mono">docs/index.html, styles.css, app.js</td>
+              <td>Original HTML5, CSS3, Canvas visualizations, and inline SVG brand mark authored for this showcase.</td>
+              <td>Original repository assets. Uses local system font stacks with zero external font CDNs or third-party runtime requests.</td>
+            </tr>
+            <tr>
+              <td class="mono">Private Source Reference</td>
+              <td>Original Python/Keras research repository (<code>erturkeryavuz/TSLAIQ</code>) is preserved privately.</td>
+              <td>No private training data, legacy <code>.keras</code> model binaries, or TensorBoard logs are redistributed here.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">
+        Markdown record: <a href="THIRD-PARTY-NOTICES.md">docs/THIRD-PARTY-NOTICES.md</a> &middot;
+        Public demo repository: <a href="https://github.com/erturkeryavuz/tslaiq-demo" target="_blank" rel="noopener noreferrer">erturkeryavuz/tslaiq-demo</a>
+      </p>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TSLAIQ Demo — Synthetic Equity Analytics &amp; ML Methodology Showcase</title>
+  <meta
+    name="description"
+    content="Sanitized static portfolio showcase for TSLAIQ using a 100% synthetic daily equity series (SYNTH-EQ), technical indicators, leak-free persistence benchmarking, and an archival summary of private research."
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to analytics workspace</a>
+
+  <!-- Top Provenance & Synthetic Boundary Strip -->
+  <div class="provenance-bar" role="region" aria-label="Synthetic dataset provenance and financial disclaimer">
+    <div class="container provenance-inner">
+      <div class="provenance-badges">
+        <span class="pill pill-snapshot">100% SYNTHETIC DATA</span>
+        <span class="provenance-text">
+          Fictional ticker <strong>SYNTH-EQ</strong> &middot; Seed <code>20261123</code> &middot;
+          Final synthetic session: <strong id="banner-end-date">2025-10-01</strong>
+          (<span class="mono" id="banner-last-close">$244.49</span>) &middot;
+          <span id="banner-count">1,500</span> sessions
+        </span>
+      </div>
+      <div class="provenance-disclaimer">
+        Private engineering source &middot; <strong>Zero real market data</strong> &middot; <strong>Not financial advice</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 36 36" width="36" height="36" aria-hidden="true">
+          <rect x="1" y="1" width="34" height="34" rx="8" fill="#131C2E" stroke="#283854" stroke-width="1.5" />
+          <path d="M7 24 L13 18 L18 21 L24 12 L29 15" fill="none" stroke="#FF4D6A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="24" cy="12" r="2.6" fill="#38BDF8" />
+          <line x1="7" y1="27.5" x2="29" y2="27.5" stroke="#283854" stroke-width="1.2" />
+        </svg>
+        <div>
+          <div class="brand-title-row">
+            <h1>TSLAIQ</h1>
+            <span class="ticker-chip mono">SYNTH-EQ &middot; SYNTHETIC</span>
+          </div>
+          <p class="brand-sub">Synthetic Time-Series Analytics &amp; ML Methodology Showcase (Private Source)</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a class="btn-ghost" href="notices.html">Notices &amp; Provenance</a>
+        <a
+          class="btn-outline"
+          href="https://github.com/erturkeryavuz/tslaiq-demo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Demo Repository
+        </a>
+      </div>
+    </div>
+
+    <!-- Primary Workspace Navigation Tabs -->
+    <div class="container">
+      <nav class="tab-nav" role="tablist" aria-label="TSLAIQ synthetic showcase sections">
+        <button class="tab-btn active" role="tab" id="tab-overview" aria-selected="true" aria-controls="panel-overview" data-tab="overview">
+          Overview
+        </button>
+        <button class="tab-btn" role="tab" id="tab-indicators" aria-selected="false" aria-controls="panel-indicators" data-tab="indicators" tabindex="-1">
+          Technical Indicators
+        </button>
+        <button class="tab-btn" role="tab" id="tab-research" aria-selected="false" aria-controls="panel-research" data-tab="research" tabindex="-1">
+          Benchmarks &amp; Research
+        </button>
+        <button class="tab-btn" role="tab" id="tab-sandbox" aria-selected="false" aria-controls="panel-sandbox" data-tab="sandbox" tabindex="-1">
+          Signal Sandbox
+        </button>
+        <button class="tab-btn" role="tab" id="tab-inspector" aria-selected="false" aria-controls="panel-inspector" data-tab="inspector" tabindex="-1">
+          Technical Inspector
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container main-workspace">
+    <!-- ==================== PANEL 1: OVERVIEW ==================== -->
+    <section id="panel-overview" class="tab-panel active" role="tabpanel" aria-labelledby="tab-overview">
+      <!-- KPI Strip -->
+      <div class="kpi-grid" aria-label="Synthetic SYNTH-EQ summary metrics">
+        <article class="kpi-card">
+          <div class="kpi-label">Final Synthetic Close</div>
+          <div class="kpi-value mono" id="kpi-close">$244.49</div>
+          <div class="kpi-sub" id="kpi-close-sub">2025-10-01 (&minus;0.25% vs prior session)</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">Synthetic Peak Close</div>
+          <div class="kpi-value mono" id="kpi-ath">$338.84</div>
+          <div class="kpi-sub" id="kpi-ath-sub">2025-03-20 (SYNTH-EQ synthetic)</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">Synthetic Sessions</div>
+          <div class="kpi-value mono" id="kpi-days">1,500</div>
+          <div class="kpi-sub" id="kpi-span-sub">2020-01-02 &rarr; 2025-10-01</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">SYNTH-EQ Naive RMSE</div>
+          <div class="kpi-value mono" id="kpi-baseline-rmse">$5.83</div>
+          <div class="kpi-sub" id="kpi-baseline-sub">SYNTH-EQ leak-free val (278 days)</div>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label">Latest Synthetic RSI(14)</div>
+          <div class="kpi-value mono" id="kpi-rsi">38.26</div>
+          <div class="kpi-sub" id="kpi-rsi-sub">SYNTH-EQ 2025-10-01 (14d Wilder)</div>
+        </article>
+      </div>
+
+      <!-- Main Synthetic Price + Volume Chart Card -->
+      <article class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h2>Synthetic Daily Close Price &amp; Volume (<code>SYNTH-EQ</code>)</h2>
+            <p class="panel-desc">
+              100% synthetic daily OHLCV observations generated deterministically by <code>scripts/generate_synthetic_data.py</code>
+              (seed <code>20261123</code>, zero real market data). Hover, tap, or scrub any session.
+            </p>
+          </div>
+          <div class="controls-group">
+            <div class="segmented" role="group" aria-label="Date range presets">
+              <button type="button" class="seg-btn" data-range="3M">3M</button>
+              <button type="button" class="seg-btn active" data-range="1Y">1Y</button>
+              <button type="button" class="seg-btn" data-range="3Y">3Y</button>
+              <button type="button" class="seg-btn" data-range="5Y">5Y</button>
+              <button type="button" class="seg-btn" data-range="ALL">ALL</button>
+            </div>
+            <div class="overlay-toggles" role="group" aria-label="Chart overlays">
+              <label class="toggle-chip">
+                <input type="checkbox" id="toggle-ema20" checked />
+                <span class="swatch swatch-ema20"></span>EMA20
+              </label>
+              <label class="toggle-chip">
+                <input type="checkbox" id="toggle-ema50" checked />
+                <span class="swatch swatch-ema50"></span>EMA50
+              </label>
+              <label class="toggle-chip">
+                <input type="checkbox" id="toggle-split" checked />
+                <span class="swatch swatch-split"></span>Val Split
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Hover / Scrubber Readout -->
+        <div class="readout-strip mono" id="overview-readout" aria-live="polite">
+          <span>Date: <strong id="ro-date">2025-10-01</strong></span>
+          <span>O: <strong id="ro-open">$243.06</strong></span>
+          <span>H: <strong id="ro-high">$247.22</strong></span>
+          <span>L: <strong id="ro-low">$240.73</strong></span>
+          <span>C: <strong id="ro-close">$244.49</strong></span>
+          <span>Vol: <strong id="ro-vol">30.11M</strong></span>
+          <span class="c-ema20">EMA20: <strong id="ro-ema20">$257.46</strong></span>
+          <span class="c-ema50">EMA50: <strong id="ro-ema50">$256.57</strong></span>
+        </div>
+
+        <div class="chart-stage chart-stage-lg">
+          <canvas id="chart-overview" role="img" aria-label="Interactive synthetic SYNTH-EQ daily close price and volume chart"></canvas>
+        </div>
+
+        <div class="scrubber-row">
+          <label for="overview-scrubber" class="scrubber-label">Keyboard Date Inspector</label>
+          <input type="range" id="overview-scrubber" min="0" max="100" value="100" aria-label="Inspect synthetic session in active range" />
+          <span class="mono scrubber-date" id="overview-scrubber-label">2025-10-01</span>
+        </div>
+      </article>
+
+      <!-- Yearly Summary & Synthetic Provenance Grid -->
+      <div class="two-col-grid">
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Annual Synthetic Summary (2020&ndash;2025)</h3>
+            <span class="badge-tag">SYNTH-EQ Only</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th class="num">Days</th>
+                  <th class="num">First Close</th>
+                  <th class="num">Last Close</th>
+                  <th class="num">Low / High</th>
+                  <th class="num">Period Chg</th>
+                </tr>
+              </thead>
+              <tbody id="yearly-table-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Synthetic Dataset Provenance &amp; Validation</h3>
+            <span class="badge-tag badge-ok">Reproducible Offline</span>
+          </div>
+          <dl class="meta-list">
+            <div>
+              <dt>Fictional Ticker &amp; File</dt>
+              <dd class="mono">SYNTH-EQ &middot; data/synthetic_ohlcv.csv</dd>
+            </div>
+            <div>
+              <dt>Generation Algorithm</dt>
+              <dd>4-regime geometric random walk + mean-reverting stochastic volatility (Python stdlib, seed <code>20261123</code>)</dd>
+            </div>
+            <div>
+              <dt>Independence Guarantee</dt>
+              <dd>Zero Yahoo Finance rows, zero real Tesla prices, zero scaling/perturbation of real market data</dd>
+            </div>
+            <div>
+              <dt>Synthetic Span</dt>
+              <dd class="mono">2020-01-02 &rarr; 2025-10-01 (1,500 weekday sessions)</dd>
+            </div>
+            <div>
+              <dt>OHLCV &amp; Ordering Checks</dt>
+              <dd>0 duplicates &middot; strictly ascending dates &middot; <code>High &ge; max(O, C)</code> &middot; <code>Low &le; min(O, C)</code></dd>
+            </div>
+            <div>
+              <dt>Post-Warmup Completeness</dt>
+              <dd>1,451 complete feature rows (2020-03-11 &rarr; 2025-10-01) &middot; 0 post-warmup NaNs</dd>
+            </div>
+            <div>
+              <dt>Private Engineering Source</dt>
+              <dd>Original Python/Keras training source (<code>erturkeryavuz/TSLAIQ</code>) is preserved privately.</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== PANEL 2: TECHNICAL INDICATORS ==================== -->
+    <section id="panel-indicators" class="tab-panel" role="tabpanel" aria-labelledby="tab-indicators" hidden>
+      <article class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h2>Synchronized Technical Indicator Stack (<code>SYNTH-EQ</code>)</h2>
+            <p class="panel-desc">
+              All 6 indicators (RSI(14), EMA20, EMA50, MACD(12,26), Signal(9), OBV) computed deterministically on the
+              100% synthetic <code>SYNTH-EQ</code> daily series.
+            </p>
+          </div>
+          <div class="segmented" role="group" aria-label="Indicator date range presets">
+            <button type="button" class="seg-btn ind-range-btn" data-ind-range="3M">3M</button>
+            <button type="button" class="seg-btn ind-range-btn active" data-ind-range="1Y">1Y</button>
+            <button type="button" class="seg-btn ind-range-btn" data-ind-range="3Y">3Y</button>
+            <button type="button" class="seg-btn ind-range-btn" data-ind-range="5Y">5Y</button>
+            <button type="button" class="seg-btn ind-range-btn" data-ind-range="ALL">ALL</button>
+          </div>
+        </div>
+
+        <div class="readout-strip mono" id="ind-readout" aria-live="polite">
+          <span>Date: <strong id="iro-date">2025-10-01</strong></span>
+          <span>Close: <strong id="iro-close">$244.49</strong></span>
+          <span class="c-rsi">RSI(14): <strong id="iro-rsi">38.26</strong></span>
+          <span class="c-macd">MACD: <strong id="iro-macd">-1.47</strong></span>
+          <span class="c-sig">Signal(9): <strong id="iro-sig">1.50</strong></span>
+          <span class="c-obv">OBV: <strong id="iro-obv">3.90B</strong></span>
+        </div>
+
+        <div class="indicator-stack">
+          <div class="subchart-block">
+            <div class="subchart-title">
+              <span>Relative Strength Index &mdash; RSI(14)</span>
+              <span class="mono muted">Scale: 0&ndash;100 &middot; Overbought 70 / Oversold 30</span>
+            </div>
+            <div class="chart-stage chart-stage-sm">
+              <canvas id="chart-rsi" role="img" aria-label="Synthetic SYNTH-EQ RSI(14) chart with 30 and 70 reference bands"></canvas>
+            </div>
+          </div>
+
+          <div class="subchart-block">
+            <div class="subchart-title">
+              <span>MACD(12, 26) &amp; Signal(9) + Histogram</span>
+              <span class="mono muted">EMA(12) &minus; EMA(26) &middot; Computed strictly on SYNTH-EQ</span>
+            </div>
+            <div class="chart-stage chart-stage-sm">
+              <canvas id="chart-macd" role="img" aria-label="Synthetic SYNTH-EQ MACD, Signal line, and histogram chart"></canvas>
+            </div>
+          </div>
+
+          <div class="subchart-block">
+            <div class="subchart-title">
+              <span>On-Balance Volume &mdash; OBV (Cumulative Synthetic Shares)</span>
+              <span class="mono muted">Convention: Close &ge; PrevClose adds volume</span>
+            </div>
+            <div class="chart-stage chart-stage-sm">
+              <canvas id="chart-obv" role="img" aria-label="Synthetic SYNTH-EQ cumulative On-Balance Volume chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel-card">
+        <div class="panel-head-compact">
+          <h3>Indicator Specifications &amp; Warm-Up Schedule (<code>SYNTH-EQ</code>)</h3>
+          <span class="badge-tag badge-ok">Deterministic Stdlib</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Indicator</th>
+                <th>Formula / Convention</th>
+                <th class="num">Warm-Up NaNs</th>
+                <th>Pipeline Feature</th>
+                <th class="num">Final Synthetic Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">RSI</td>
+                <td>14-period Wilder RMA smoothing (<code>alpha = 1/14</code>)</td>
+                <td class="num mono">13</td>
+                <td><span class="badge-tag badge-ok">Included</span></td>
+                <td class="num mono" id="ind-tbl-rsi">38.2629</td>
+              </tr>
+              <tr>
+                <td class="mono">EMA20</td>
+                <td>Exponential Moving Average, <code>span=20, adjust=False</code></td>
+                <td class="num mono">19</td>
+                <td><span class="badge-tag badge-ok">Included</span></td>
+                <td class="num mono" id="ind-tbl-ema20">$257.4562</td>
+              </tr>
+              <tr>
+                <td class="mono">EMA50</td>
+                <td>Exponential Moving Average, <code>span=50, adjust=False</code></td>
+                <td class="num mono">49</td>
+                <td><span class="badge-tag badge-ok">Included</span></td>
+                <td class="num mono" id="ind-tbl-ema50">$256.5741</td>
+              </tr>
+              <tr>
+                <td class="mono">MACD</td>
+                <td><code>EMA(12) &minus; EMA(26)</code></td>
+                <td class="num mono">25</td>
+                <td><span class="badge-tag badge-ok">Included</span></td>
+                <td class="num mono" id="ind-tbl-macd">-1.4745</td>
+              </tr>
+              <tr>
+                <td class="mono">MACD_Signal</td>
+                <td><code>EMA(9)</code> of MACD line</td>
+                <td class="num mono">33</td>
+                <td><span class="badge-tag badge-muted">Chart Only</span></td>
+                <td class="num mono" id="ind-tbl-sig">1.4987</td>
+              </tr>
+              <tr>
+                <td class="mono">OBV</td>
+                <td>Cumulative signed volume (<code>Close &ge; PrevClose</code> adds)</td>
+                <td class="num mono">0</td>
+                <td><span class="badge-tag badge-ok">Included</span></td>
+                <td class="num mono" id="ind-tbl-obv">3,895,822,777</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==================== PANEL 3: BENCHMARKS & RESEARCH ==================== -->
+    <section id="panel-research" class="tab-panel" role="tabpanel" aria-labelledby="tab-research" hidden>
+      <div class="callout callout-warn">
+        <strong>Scientific Separation Notice (Synthetic Demo vs. Private Research):</strong>
+        The interactive chart and baseline metrics below are computed exclusively on the <strong>100% synthetic <code>SYNTH-EQ</code> series</strong>
+        (no neural network has been trained on <code>SYNTH-EQ</code>). Separately, in the original private <code>TSLAIQ</code> engineering project
+        on real historical equity data, <strong>none of the historically logged LSTM/Attention-LSTM checkpoints outperformed the trivial naive persistence baseline</strong>.
+      </div>
+
+      <!-- Synthetic Validation Rolling RMSE Chart -->
+      <article class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h2>Part A &mdash; Synthetic Held-Out Validation Baselines (<code>SYNTH-EQ</code>)</h2>
+            <p class="panel-desc">
+              20-day rolling USD RMSE across the held-out 278-day chronological validation split (<code>2024-09-09 &rarr; 2025-10-01</code>)
+              comparing <strong>Naive Persistence</strong> (<code>y[t-1]</code>) against a <strong>Lagged EMA20 Reference</strong>,
+              computed deterministically on <code>SYNTH-EQ</code> under leak-free train-only scaling.
+            </p>
+          </div>
+          <div class="overlay-toggles" id="run-toggles" role="group" aria-label="Toggle synthetic baseline series"></div>
+        </div>
+
+        <div class="readout-strip mono" id="loss-readout" aria-live="polite">
+          <span class="c-baseline">SYNTH-EQ Naive Persistence: <strong>$5.83 RMSE (0.003497 scaled MSE)</strong></span>
+          <span>SYNTH-EQ Lagged EMA20: <strong>$14.65 RMSE (0.022101 scaled MSE)</strong></span>
+          <span>Neural Network on SYNTH-EQ: <strong>NOT TRAINED</strong></span>
+        </div>
+
+        <div class="chart-stage chart-stage-md">
+          <canvas id="chart-training" role="img" aria-label="Synthetic SYNTH-EQ 20-day rolling validation RMSE comparing naive persistence and lagged EMA20"></canvas>
+        </div>
+      </article>
+
+      <!-- Separated Tables: Synthetic Evaluation + Private Historical Record -->
+      <div class="two-col-grid">
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>SYNTH-EQ Leak-Free Split Benchmark</h3>
+            <span class="badge-tag">Synthetic Data Only</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Benchmark (SYNTH-EQ)</th>
+                  <th>Protocol</th>
+                  <th class="num">Scaled MSE</th>
+                  <th class="num">USD RMSE</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Naive Persistence</strong> (<code>y_t = y_{t-1}</code>)</td>
+                  <td>Leak-Free (278d val, train-only scale)</td>
+                  <td class="num mono c-baseline">0.003497</td>
+                  <td class="num mono">$5.83</td>
+                  <td><span class="badge-tag badge-ok">Computed</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Lagged EMA20 Reference</strong></td>
+                  <td>Leak-Free (278d val, train-only scale)</td>
+                  <td class="num mono">0.022101</td>
+                  <td class="num mono">$14.65</td>
+                  <td><span class="badge-tag badge-ok">Computed</span></td>
+                </tr>
+                <tr>
+                  <td>Safe Attention-LSTM / LSTM</td>
+                  <td>Synthetic series</td>
+                  <td class="num mono muted">NOT RUN</td>
+                  <td class="num mono muted">NOT RUN</td>
+                  <td><span class="badge-tag badge-warn">Not Trained</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="footnote">
+            Training scaler bounds are fitted strictly on <code>2020-03-11 &rarr; 2024-09-06</code> (1,113 sequences)
+            with zero validation look-ahead.
+          </p>
+        </article>
+
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Part B &mdash; Archival Private Research Summary</h3>
+            <span class="badge-tag badge-muted">Private Source &middot; Separate</span>
+          </div>
+          <p class="panel-desc" style="margin-bottom: 12px;">
+            Established conclusions from the original private <code>erturkeryavuz/TSLAIQ</code> engineering repository
+            (conducted on real historical equity data — <strong>not</strong> measured on <code>SYNTH-EQ</code>):
+          </p>
+          <ul id="historical-summary-list" style="margin: 0; padding-left: 18px; display: grid; gap: 10px; color: var(--text-muted); font-size: 13.5px; line-height: 1.55;"></ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== PANEL 4: SIGNAL SANDBOX ==================== -->
+    <section id="panel-sandbox" class="tab-panel" role="tabpanel" aria-labelledby="tab-sandbox" hidden>
+      <div class="callout callout-danger">
+        <strong>ILLUSTRATIVE EDUCATIONAL RULE SANDBOX &mdash; NOT LIVE FORECASTS OR INVESTMENT ADVICE:</strong>
+        This interactive tool demonstrates the deterministic threshold rule logic on user-controlled hypothetical paths anchored to
+        a synthetic <code>SYNTH-EQ</code> session. It runs <strong>no</strong> neural network, makes <strong>no</strong> real market predictions,
+        and provides <strong>no</strong> trading advice.
+      </div>
+
+      <div class="two-col-grid sandbox-grid">
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Hypothetical Scenario Inputs</h3>
+            <span class="badge-tag badge-warn">Illustrative Only</span>
+          </div>
+
+          <div class="form-stack">
+            <div class="form-field">
+              <label for="sb-date">Synthetic Reference Day (from last 60 SYNTH-EQ sessions)</label>
+              <select id="sb-date" class="input-select mono"></select>
+            </div>
+
+            <div class="form-field">
+              <div class="slider-head">
+                <label for="sb-threshold">Decision Threshold (&plusmn;%)</label>
+                <span class="mono" id="sb-threshold-val">5.0%</span>
+              </div>
+              <input type="range" id="sb-threshold" min="1" max="15" step="0.5" value="5" />
+              <span class="field-hint">Illustrative threshold rule default: &plusmn;5.0%</span>
+            </div>
+
+            <div class="form-field">
+              <div class="slider-head">
+                <label for="sb-drift">Hypothetical 7-Day Net Move (%)</label>
+                <span class="mono" id="sb-drift-val">+2.5%</span>
+              </div>
+              <input type="range" id="sb-drift" min="-15" max="15" step="0.5" value="2.5" />
+              <span class="field-hint">User-selected fictional path &mdash; not an ML prediction</span>
+            </div>
+
+            <div class="form-field">
+              <div class="slider-head">
+                <label for="sb-swing">Hypothetical Intra-Week Swing (&plusmn;%)</label>
+                <span class="mono" id="sb-swing-val">2.0%</span>
+              </div>
+              <input type="range" id="sb-swing" min="0" max="10" step="0.5" value="2" />
+              <span class="field-hint">Shows how peak/trough crosses threshold even when net drift is flat</span>
+            </div>
+
+            <div class="preset-row">
+              <button type="button" class="btn-chip" data-sb-preset="bull">Preset: +7% Upward Scenario</button>
+              <button type="button" class="btn-chip" data-sb-preset="flat">Preset: &plusmn;2% Rangebound</button>
+              <button type="button" class="btn-chip" data-sb-preset="bear">Preset: &minus;8% Drawdown</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Deterministic Rule Evaluation</h3>
+            <span class="mono muted">Synthetic Sandbox</span>
+          </div>
+
+          <div class="signal-banner" id="sb-signal-banner">
+            <div>
+              <div class="signal-eyebrow">RULE OUTPUT (ILLUSTRATIVE)</div>
+              <div class="signal-code mono" id="sb-signal-code">BEKLE</div>
+            </div>
+            <p class="signal-msg" id="sb-signal-msg"></p>
+          </div>
+
+          <div class="chart-stage chart-stage-sm">
+            <canvas id="chart-sandbox" role="img" aria-label="Illustrative 7-day hypothetical path against upper and lower threshold bands"></canvas>
+          </div>
+
+          <div class="rule-trace mono" id="sb-rule-trace"></div>
+
+          <p class="footnote">
+            <strong>Multi-step rollout caution:</strong> Multi-day recursive forecasting compounds prediction error quickly
+            and requires recomputing derived indicators at each step rather than reusing stale historical indicator values.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== PANEL 5: TECHNICAL INSPECTOR ==================== -->
+    <section id="panel-inspector" class="tab-panel" role="tabpanel" aria-labelledby="tab-inspector" hidden>
+      <div class="two-col-grid">
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Private Engineering Architecture Overview</h3>
+            <span class="badge-tag">Source Repository Private</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Subsystem (Private Repo)</th>
+                  <th>Engineering Hardening Implemented</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mono">Leak-Free Preprocessing</td>
+                  <td>Chronological split-first pipeline + JSON-serializable <code>TrainOnlyMinMaxScaler</code> fitted strictly on training dates.</td>
+                </tr>
+                <tr>
+                  <td class="mono">Deterministic Indicators</td>
+                  <td>Pure-Python stdlib RSI(14), EMA20/50, MACD(12,26,9), and OBV matching technical-analysis conventions.</td>
+                </tr>
+                <tr>
+                  <td class="mono">Baseline Benchmarking</td>
+                  <td>Apples-to-apples naive persistence baseline (<code>y_t = y_{t-1}</code>) verifying whether sequence models add predictive skill.</td>
+                </tr>
+                <tr>
+                  <td class="mono">Safe Keras Serialization</td>
+                  <td>Static ZIP/JSON archive inspection rejecting anonymous <code>Lambda</code> bytecode before Keras deserialization, plus registered custom attention layers.</td>
+                </tr>
+                <tr>
+                  <td class="mono">Public Showcase Separation</td>
+                  <td>This standalone public repo publishes zero real market CSVs, zero legacy <code>.keras</code> binaries, and zero TensorBoard logs.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel-card">
+          <div class="panel-head-compact">
+            <h3>Attention-LSTM Safe Layer Pipeline</h3>
+            <span class="badge-tag badge-ok">Design Summary</span>
+          </div>
+          <div class="arch-flow" aria-label="Attention-LSTM safe layer pipeline summary">
+            <div class="arch-node">
+              <span class="arch-name mono">Input</span>
+              <span class="arch-shape mono">(None, 60, 6)</span>
+              <span class="arch-note">Close, RSI, EMA20, EMA50, MACD, OBV</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">&darr;</div>
+            <div class="arch-node">
+              <span class="arch-name mono">LSTM(64, return_sequences=True)</span>
+              <span class="arch-shape mono">(None, 60, 64)</span>
+              <span class="arch-note">Temporal sequence encoder</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">&darr;</div>
+            <div class="arch-node arch-node-highlight">
+              <span class="arch-name mono">Serializable Attention Layers</span>
+              <span class="arch-shape mono">(None, 128)</span>
+              <span class="arch-note">Replaces anonymous <code>Lambda</code> bytecode with explicit custom Keras layers</span>
+            </div>
+            <div class="arch-arrow" aria-hidden="true">&darr;</div>
+            <div class="arch-node">
+              <span class="arch-name mono">Dropout(0.3) &rarr; Dense(1)</span>
+              <span class="arch-shape mono">(None, 1)</span>
+              <span class="arch-note">MSE loss &middot; next-step target (live TF retraining UNRUN)</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="panel-card">
+        <div class="panel-head-compact">
+          <h3>Public Demo Verification Gates</h3>
+          <span class="badge-tag badge-ok">Honest Scope</span>
+        </div>
+        <div class="gate-grid">
+          <div class="gate-item gate-pass">
+            <div class="gate-status mono">VERIFIED &middot; STDLIB</div>
+            <div class="gate-title">Synthetic Generator &amp; OHLCV Invariants</div>
+            <p>Deterministic seed <code>20261123</code> byte-for-byte reproducibility, 1,500 strictly ascending weekday sessions, positive prices, valid High/Low bounds, and zero NaN/Infinity values.</p>
+          </div>
+          <div class="gate-item gate-pass">
+            <div class="gate-status mono">VERIFIED &middot; SANITIZED</div>
+            <div class="gate-title">Zero Licensed Data &amp; Zero Unsafe Binaries</div>
+            <p>Confirmed zero Yahoo Finance OHLCV rows, zero legacy <code>.keras</code> archives, zero TensorBoard logs, zero secrets, and zero external runtime network calls.</p>
+          </div>
+          <div class="gate-item gate-unrun">
+            <div class="gate-status mono">NOT INCLUDED &middot; UNRUN</div>
+            <div class="gate-title">Live TensorFlow / Keras Training</div>
+            <p>This static demo runs no live ML training or inference. No neural network has been trained on <code>SYNTH-EQ</code>.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>TSLAIQ Demo</strong> &middot; Synthetic Portfolio Showcase by Ert&uuml;rk Eryavuz &middot;
+        100% synthetic <code>SYNTH-EQ</code> dataset &middot; Not affiliated with Tesla, Inc. &middot; Not financial advice.
+      </div>
+      <div class="footer-links">
+        <a href="notices.html">Third-Party Notices</a>
+        <a href="THIRD-PARTY-NOTICES.md">Notices (Markdown)</a>
+        <a href="https://github.com/erturkeryavuz/tslaiq-demo" target="_blank" rel="noopener noreferrer">Demo Repository</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
