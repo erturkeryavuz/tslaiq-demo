@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" fill="none">
+  <defs>
+    <!-- Foundation Obsidian & Quantitative Studio Lighting -->
+    <linearGradient id="bgBase" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0A0C10" />
+      <stop offset="52%" stop-color="#11141A" />
+      <stop offset="100%" stop-color="#090B0E" />
+    </linearGradient>
+
+    <radialGradient id="quantHalo" cx="1100" cy="400" r="580" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#56B4E9" stop-opacity="0.16" />
+      <stop offset="42%" stop-color="#B49A78" stop-opacity="0.08" />
+      <stop offset="75%" stop-color="#34D399" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#0A0C10" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="leftStudioGlow" cx="250" cy="340" r="490" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B49A78" stop-opacity="0.09" />
+      <stop offset="58%" stop-color="#758D92" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#0A0C10" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="cardSurface" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#181C23" />
+      <stop offset="100%" stop-color="#11141A" />
+    </linearGradient>
+
+    <linearGradient id="cardBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EBD0A4" stop-opacity="0.45" />
+      <stop offset="48%" stop-color="#56B4E9" stop-opacity="0.34" />
+      <stop offset="100%" stop-color="#F1EDE5" stop-opacity="0.10" />
+    </linearGradient>
+
+    <linearGradient id="priceArea" x1="0" y1="220" x2="0" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E86378" stop-opacity="0.28" />
+      <stop offset="68%" stop-color="#56B4E9" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#0B0D11" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="traceBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171B22" stop-opacity="0.98" />
+      <stop offset="100%" stop-color="#0F1218" stop-opacity="0.98" />
+    </linearGradient>
+
+    <filter id="shadowHeavy" x="-16%" y="-16%" width="132%" height="138%">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000000" flood-opacity="0.62" />
+    </filter>
+    <filter id="shadowSoft" x="-14%" y="-14%" width="128%" height="132%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+
+    <clipPath id="canvasClip">
+      <rect x="0" y="0" width="1600" height="900" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#canvasClip)">
+    <!-- 1. BACKGROUND & ARCHITECTURAL FRAME -->
+    <rect width="1600" height="900" fill="url(#bgBase)" />
+    <rect width="1600" height="900" fill="url(#quantHalo)" />
+    <rect width="1600" height="900" fill="url(#leftStudioGlow)" />
+
+    <g stroke="#F1EDE5" stroke-opacity="0.045" stroke-width="1.2">
+      <rect x="34" y="34" width="1532" height="832" rx="18" />
+      <line x1="628" y1="34" x2="628" y2="866" stroke-dasharray="4 8" />
+    </g>
+
+    <!-- Restrained Quantitative Grid Lines -->
+    <g stroke="#758D92" stroke-opacity="0.08" stroke-width="1">
+      <line x1="628" y1="260" x2="1566" y2="260" />
+      <line x1="628" y1="450" x2="1566" y2="450" />
+      <line x1="628" y1="640" x2="1566" y2="640" />
+      <circle cx="0" cy="900" r="300" stroke="#B49A78" stroke-opacity="0.08" />
+      <circle cx="1600" cy="0" r="260" stroke="#56B4E9" stroke-opacity="0.09" />
+    </g>
+
+    <!-- Corner Registration Ticks -->
+    <g stroke="#B49A78" stroke-opacity="0.35" stroke-width="1.5">
+      <path d="M54 70 L54 54 L70 54" />
+      <path d="M1546 70 L1546 54 L1530 54" />
+      <path d="M54 830 L54 846 L70 846" />
+      <path d="M1546 830 L1546 846 L1530 846" />
+    </g>
+
+    <!-- 2. LEFT EDITORIAL TYPOGRAPHY COLUMN -->
+    <g id="editorial-column">
+      <!-- Original Geometric Quantitative Line Emblem + Kicker -->
+      <rect x="86" y="192" width="40" height="40" rx="10" fill="#171B22" stroke="#B49A78" stroke-opacity="0.58" stroke-width="1.4" />
+      <path d="M94 220 L101 213 L107 216 L114 205 L120 209" stroke="#56B4E9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="114" cy="205" r="2.8" fill="#EBD0A4" />
+      <line x1="140" y1="212" x2="164" y2="212" stroke="#B49A78" stroke-width="1.5" />
+      <text x="176" y="217" fill="#B49A78" font-family="'SF Mono', 'Menlo', 'Monaco', monospace" font-size="12.5" font-weight="600" letter-spacing="2.2">QUANTITATIVE ML &amp; TIME-SERIES</text>
+
+      <!-- Main Hero Title -->
+      <text x="84" y="346" fill="#F1EDE5" font-family="'SF Pro Display', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="98" font-weight="700" letter-spacing="-3">TSLA</text>
+      <text x="334" y="346" fill="#C9B08C" font-family="'Iowan Old Style', 'Georgia', 'Times New Roman', serif" font-style="italic" font-size="102" font-weight="400" letter-spacing="-1">IQ</text>
+
+      <text x="86" y="408" fill="#8C99A6" font-family="'SF Mono', 'Menlo', monospace" font-size="18" font-weight="600" letter-spacing="1.8">SYNTH-EQ · SYNTHETIC RESEARCH</text>
+
+      <!-- Accent Divider -->
+      <rect x="86" y="440" width="68" height="3" rx="1.5" fill="#56B4E9" />
+      <rect x="162" y="441" width="144" height="1" fill="#B49A78" fill-opacity="0.38" />
+
+      <!-- Grounded Supporting Lines -->
+      <text x="86" y="498" fill="#E6E1D7" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="-0.2">Synthetic OHLCV &amp; Indicator Stack</text>
+      <text x="86" y="532" fill="#A9A398" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" letter-spacing="-0.1">Leak-Free Baselines &amp; Methodology</text>
+
+      <!-- Concise Grounded Scope Summary -->
+      <text x="86" y="592" fill="#8C939C" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15.2" font-weight="400">
+        <tspan x="86" dy="0">1,500 deterministic SYNTH-EQ sessions (seed 20261123),</tspan>
+        <tspan x="86" dy="25">6 technical indicators, 80/20 split baselines, and inspector.</tspan>
+      </text>
+
+      <!-- Architecture Metadata Strip -->
+      <g transform="translate(86, 676)">
+        <rect x="0" y="0" width="146" height="36" rx="18" fill="#24151A" stroke="#E86378" stroke-opacity="0.48" />
+        <text x="73" y="22.5" text-anchor="middle" fill="#F59AA8" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="600">100% Synthetic</text>
+
+        <rect x="158" y="0" width="144" height="36" rx="18" fill="#171B22" stroke="#F1EDE5" stroke-opacity="0.16" />
+        <text x="230" y="22.5" text-anchor="middle" fill="#E4DFD5" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="500">Python · Canvas</text>
+
+        <rect x="314" y="0" width="146" height="36" rx="18" fill="#12212E" stroke="#56B4E9" stroke-opacity="0.52" />
+        <text x="387" y="22.5" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="600">Watch Tutorial</text>
+      </g>
+
+      <!-- Honest Disclaimer / Attribution Footer -->
+      <text x="86" y="766" fill="#6F7680" font-family="'SF Mono', 'Menlo', monospace" font-size="11.5" letter-spacing="1.1">ERTÜRK ERYAVUZ  ·  ZERO REAL MARKET DATA</text>
+      <text x="86" y="790" fill="#5D646E" font-family="'SF Mono', 'Menlo', monospace" font-size="11" letter-spacing="0.9">NOT AFFILIATED WITH TESLA  ·  NOT FINANCIAL ADVICE</text>
+    </g>
+
+    <!-- 3. RIGHT DESKTOP QUANTITATIVE WORKSPACE SHOWCASE (No Phone Frame) -->
+
+    <!-- 3A. PRIMARY DASHBOARD CHART CARD: SYNTH-EQ Price, Overlays, Val Split & Volume -->
+    <g id="hero-price-chart" filter="url(#shadowHeavy)" transform="translate(662, 102)">
+      <rect x="0" y="0" width="874" height="390" rx="20" fill="url(#cardSurface)" stroke="url(#cardBorder)" stroke-width="1.6" />
+
+      <!-- Card Header -->
+      <text x="24" y="34" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600" letter-spacing="1.5">OVERVIEW WORKSPACE · DETERMINISTIC SEED 20261123</text>
+      <text x="24" y="62" fill="#F1EDE5" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="21" font-weight="700">Synthetic Daily Close &amp; Volume (SYNTH-EQ)</text>
+
+      <!-- Top-Right Chips -->
+      <rect x="572" y="22" width="128" height="26" rx="13" fill="#24151A" stroke="#E86378" stroke-opacity="0.52" />
+      <text x="636" y="39" text-anchor="middle" fill="#F59AA8" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">100% SYNTHETIC</text>
+
+      <rect x="710" y="22" width="140" height="26" rx="13" fill="#141923" stroke="#F1EDE5" stroke-opacity="0.14" />
+      <text x="734" y="39" fill="#7D8694" font-family="'SF Mono', monospace" font-size="10.5">1Y</text>
+      <text x="772" y="39" fill="#7D8694" font-family="'SF Mono', monospace" font-size="10.5">3Y</text>
+      <rect x="802" y="25" width="42" height="20" rx="8" fill="#2C261D" stroke="#B49A78" stroke-opacity="0.6" />
+      <text x="823" y="39" text-anchor="middle" fill="#F1EDE5" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">ALL</text>
+
+      <!-- Readout Strip (Exact Grounded SYNTH-EQ Metrics) -->
+      <rect x="24" y="78" width="826" height="34" rx="9" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.08" />
+      <text x="40" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Final Close: <tspan fill="#F1EDE5" font-weight="700">$244.49</tspan></text>
+      <text x="218" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Peak: <tspan fill="#EBD0A4" font-weight="700">$338.84</tspan></text>
+      <text x="364" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">EMA20: <tspan fill="#56B4E9" font-weight="700">$257.46</tspan></text>
+      <text x="518" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">EMA50: <tspan fill="#A78BFA" font-weight="700">$256.57</tspan></text>
+      <text x="676" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Sessions: <tspan fill="#34D399" font-weight="700">1,500</tspan></text>
+
+      <!-- Deep Chart Stage -->
+      <rect x="24" y="124" width="826" height="244" rx="12" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.08" />
+
+      <!-- Y Grid + Price Labels -->
+      <g stroke="#242C3A" stroke-width="1">
+        <line x1="82" y1="154" x2="834" y2="154" />
+        <line x1="82" y1="198" x2="834" y2="198" />
+        <line x1="82" y1="242" x2="834" y2="242" />
+        <line x1="82" y1="286" x2="834" y2="286" />
+      </g>
+      <g fill="#758D92" font-family="'SF Mono', monospace" font-size="10.5" text-anchor="end">
+        <text x="74" y="158">$349</text>
+        <text x="74" y="202">$295</text>
+        <text x="74" y="246">$240</text>
+        <text x="74" y="290">$185</text>
+      </g>
+
+      <!-- Shaded Chronological Validation Split (80/20: 2024-09-09 -> 2025-10-01) -->
+      <rect x="596" y="132" width="238" height="176" fill="#EAB354" fill-opacity="0.065" />
+      <line x1="596" y1="132" x2="596" y2="308" stroke="#EAB354" stroke-opacity="0.82" stroke-width="1.4" stroke-dasharray="5 4" />
+      <text x="605" y="146" fill="#F6CE80" font-family="'SF Mono', monospace" font-size="10" font-weight="600">VAL SPLIT (2024-09-09)</text>
+
+      <!-- Synthetic Price Area Fill -->
+      <path d="M84 282 L134 268 L184 274 L234 252 L284 238 L334 254 L384 226 L434 236 L484 214 L534 224 L584 246 L634 218 L684 188 L718 158 L748 184 L782 222 L808 212 L832 238 L832 308 L84 308 Z" fill="url(#priceArea)" />
+
+      <!-- EMA50 (Violet, smooth lagging average below peak) -->
+      <path d="M84 285 L154 276 L234 264 L314 252 L394 242 L474 231 L554 236 L634 228 L694 206 L734 196 L782 214 L832 227" stroke="#A78BFA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-opacity="0.88" />
+      <!-- EMA20 (Sky, faster lagging average below peak) -->
+      <path d="M84 282 L154 272 L234 258 L314 246 L394 234 L474 223 L554 234 L634 222 L694 192 L728 176 L764 196 L798 216 L832 226" stroke="#56B4E9" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <!-- Close Price Line (Warm Ivory) -->
+      <path d="M84 282 L134 268 L184 274 L234 252 L284 238 L334 254 L384 226 L434 236 L484 214 L534 224 L584 246 L634 218 L684 188 L718 162 L748 188 L782 222 L808 212 L832 238" stroke="#F1EDE5" stroke-width="2.1" stroke-linejoin="round" fill="none" />
+
+      <!-- Peak Marker ($338.84) & Final Close Dot ($244.49) -->
+      <circle cx="718" cy="162" r="4" fill="#EBD0A4" stroke="#0B0D11" stroke-width="1.5" />
+      <circle cx="832" cy="238" r="4.5" fill="#E86378" stroke="#F1EDE5" stroke-width="1.5" />
+
+      <!-- Synthetic Volume Bars -->
+      <g fill-opacity="0.52">
+        <rect x="92" y="330" width="7" height="22" fill="#34D399" />
+        <rect x="116" y="324" width="7" height="28" fill="#34D399" />
+        <rect x="140" y="334" width="7" height="18" fill="#E86378" />
+        <rect x="164" y="328" width="7" height="24" fill="#34D399" />
+        <rect x="188" y="322" width="7" height="30" fill="#E86378" />
+        <rect x="212" y="332" width="7" height="20" fill="#34D399" />
+        <rect x="236" y="318" width="7" height="34" fill="#34D399" />
+        <rect x="260" y="326" width="7" height="26" fill="#34D399" />
+        <rect x="284" y="333" width="7" height="19" fill="#E86378" />
+        <rect x="308" y="320" width="7" height="32" fill="#E86378" />
+        <rect x="332" y="329" width="7" height="23" fill="#34D399" />
+        <rect x="356" y="324" width="7" height="28" fill="#34D399" />
+        <rect x="380" y="316" width="7" height="36" fill="#34D399" />
+        <rect x="404" y="327" width="7" height="25" fill="#E86378" />
+        <rect x="428" y="331" width="7" height="21" fill="#34D399" />
+        <rect x="452" y="322" width="7" height="30" fill="#34D399" />
+        <rect x="476" y="329" width="7" height="23" fill="#E86378" />
+        <rect x="500" y="318" width="7" height="34" fill="#34D399" />
+        <rect x="524" y="326" width="7" height="26" fill="#E86378" />
+        <rect x="548" y="334" width="7" height="18" fill="#E86378" />
+        <rect x="572" y="321" width="7" height="31" fill="#E86378" />
+        <rect x="596" y="314" width="7" height="38" fill="#EAB354" />
+        <rect x="620" y="324" width="7" height="28" fill="#34D399" />
+        <rect x="644" y="319" width="7" height="33" fill="#34D399" />
+        <rect x="668" y="312" width="7" height="40" fill="#34D399" />
+        <rect x="692" y="316" width="7" height="36" fill="#34D399" />
+        <rect x="716" y="310" width="7" height="42" fill="#34D399" />
+        <rect x="740" y="322" width="7" height="30" fill="#E86378" />
+        <rect x="764" y="318" width="7" height="34" fill="#E86378" />
+        <rect x="788" y="328" width="7" height="24" fill="#34D399" />
+        <rect x="812" y="325" width="7" height="27" fill="#E86378" />
+      </g>
+      <text x="86" y="362" fill="#758D92" font-family="'SF Mono', monospace" font-size="9.5">2020-01-02</text>
+      <text x="456" y="362" text-anchor="middle" fill="#758D92" font-family="'SF Mono', monospace" font-size="9.5">TRAIN SPLIT (80%)</text>
+      <text x="832" y="362" text-anchor="end" fill="#758D92" font-family="'SF Mono', monospace" font-size="9.5">2025-10-01</text>
+    </g>
+
+    <!-- 3B. LOWER-LEFT CARD: Synchronized 6-Indicator Stack -->
+    <g id="hero-indicators" filter="url(#shadowSoft)" transform="translate(662, 512)">
+      <rect x="0" y="0" width="426" height="190" rx="18" fill="url(#cardSurface)" stroke="#F1EDE5" stroke-opacity="0.12" stroke-width="1.3" />
+      <text x="22" y="32" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.4">6 DETERMINISTIC INDICATORS</text>
+      <text x="22" y="56" fill="#F1EDE5" font-family="'SF Pro Display', sans-serif" font-size="18" font-weight="700">RSI(14) · MACD · OBV</text>
+
+      <!-- Mini RSI Plot -->
+      <rect x="22" y="70" width="382" height="62" rx="10" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.07" />
+      <line x1="32" y1="86" x2="394" y2="86" stroke="#E86378" stroke-opacity="0.45" stroke-dasharray="4 4" />
+      <line x1="32" y1="116" x2="394" y2="116" stroke="#34D399" stroke-opacity="0.45" stroke-dasharray="4 4" />
+      <path d="M36 106 L74 96 L112 102 L150 90 L188 84 L226 98 L264 88 L302 108 L340 112 L390 110" stroke="#56B4E9" stroke-width="1.8" fill="none" />
+      <text x="388" y="83" text-anchor="end" fill="#F59AA8" font-family="'SF Mono', monospace" font-size="9">70</text>
+      <text x="388" y="127" text-anchor="end" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="9">30</text>
+
+      <!-- Exact Grounded Latest Indicator Readouts -->
+      <g transform="translate(22, 144)">
+        <rect x="0" y="0" width="122" height="30" rx="8" fill="#0E141C" stroke="#56B4E9" stroke-opacity="0.34" />
+        <text x="61" y="19" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">RSI 38.26</text>
+
+        <rect x="130" y="0" width="124" height="30" rx="8" fill="#0E141C" stroke="#34D399" stroke-opacity="0.34" />
+        <text x="192" y="19" text-anchor="middle" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">MACD -1.47</text>
+
+        <rect x="262" y="0" width="120" height="30" rx="8" fill="#0E141C" stroke="#A78BFA" stroke-opacity="0.34" />
+        <text x="322" y="19" text-anchor="middle" fill="#C4B5FD" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">OBV 3.90B</text>
+      </g>
+    </g>
+
+    <!-- 3C. LOWER-RIGHT CARD: Leak-Free Held-Out Baseline Comparison -->
+    <g id="hero-baselines" filter="url(#shadowSoft)" transform="translate(1108, 512)">
+      <rect x="0" y="0" width="428" height="190" rx="18" fill="url(#cardSurface)" stroke="#F1EDE5" stroke-opacity="0.12" stroke-width="1.3" />
+      <text x="22" y="32" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.4">PART A · 278D HELD-OUT SPLIT</text>
+      <text x="22" y="56" fill="#F1EDE5" font-family="'SF Pro Display', sans-serif" font-size="18" font-weight="700">Leak-Free Baselines</text>
+
+      <!-- Bar 1: Naive Persistence ($5.83 RMSE) -->
+      <g transform="translate(22, 74)">
+        <text x="0" y="12" fill="#E6E1D7" font-family="'SF Pro Text', sans-serif" font-size="12" font-weight="600">Naive Persistence (y[t-1])</text>
+        <text x="384" y="12" text-anchor="end" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="12" font-weight="700">$5.83 RMSE</text>
+        <rect x="0" y="20" width="384" height="10" rx="5" fill="#0B0D11" />
+        <rect x="0" y="20" width="144" height="10" rx="5" fill="#34D399" />
+      </g>
+
+      <!-- Bar 2: Lagged EMA20 ($14.65 RMSE) -->
+      <g transform="translate(22, 114)">
+        <text x="0" y="12" fill="#E6E1D7" font-family="'SF Pro Text', sans-serif" font-size="12" font-weight="600">Lagged EMA20 Reference</text>
+        <text x="384" y="12" text-anchor="end" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="12" font-weight="700">$14.65 RMSE</text>
+        <rect x="0" y="20" width="384" height="10" rx="5" fill="#0B0D11" />
+        <rect x="0" y="20" width="356" height="10" rx="5" fill="#56B4E9" />
+      </g>
+
+      <!-- Explicit Scientific Honesty Row -->
+      <g transform="translate(22, 152)">
+        <rect x="0" y="0" width="384" height="26" rx="8" fill="#1F1910" stroke="#EAB354" stroke-opacity="0.45" />
+        <text x="14" y="17" fill="#F6CE80" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">NEURAL NET ON SYNTH-EQ: NOT TRAINED · PART B SEPARATE</text>
+      </g>
+    </g>
+
+    <!-- 3D. FLOATING BOTTOM TECHNICAL INSPECTOR & REPRODUCIBILITY BAR -->
+    <g id="inspector-bar" filter="url(#shadowSoft)" transform="translate(662, 722)">
+      <rect x="0" y="0" width="874" height="92" rx="18" fill="url(#traceBg)" stroke="#B49A78" stroke-opacity="0.38" stroke-width="1.3" />
+      <circle cx="24" cy="28" r="5" fill="#34D399" />
+      <text x="38" y="32" fill="#9CA3AF" font-family="'SF Mono', monospace" font-size="11" font-weight="600" letter-spacing="1.4">TECHNICAL INSPECTOR · OFFLINE REPRODUCIBLE PIPELINE</text>
+      <rect x="738" y="16" width="114" height="24" rx="12" fill="#0F2D21" stroke="#34D399" stroke-opacity="0.52" />
+      <text x="795" y="32" text-anchor="middle" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">TRAIN-ONLY</text>
+
+      <rect x="20" y="48" width="116" height="28" rx="7" fill="#13222F" stroke="#56B4E9" stroke-opacity="0.52" />
+      <text x="78" y="66" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="11.5" font-weight="700">SEED 20261123</text>
+      <text x="150" y="67" fill="#F1EDE5" font-family="'SF Mono', monospace" font-size="13.5" font-weight="600">generate_synthetic_data.py</text>
+      <text x="392" y="67" fill="#8C94A0" font-family="'SF Mono', monospace" font-size="12.5">→  1,500 rows · 0 NaNs post-warmup · 0 real TSLA</text>
+    </g>
+  </g>
+</svg>

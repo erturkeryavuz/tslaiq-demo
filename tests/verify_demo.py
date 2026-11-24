@@ -31,7 +31,12 @@ EXPECTED_FILES = {
     "docs/index.html",
     "docs/notices.html",
     "docs/styles.css",
+    "media/src/tslaiq-readme-hero.svg",
+    "media/src/tslaiq-social-preview.svg",
+    "media/tslaiq-readme-hero.png",
+    "media/tslaiq-social-preview.png",
     "scripts/generate_synthetic_data.py",
+    "tests/test_tutorial.py",
     "tests/verify_demo.py",
 }
 

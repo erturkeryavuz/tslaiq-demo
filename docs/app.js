@@ -899,11 +899,921 @@
     let resizeTimer = null;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(renderActiveTabCharts, 80);
+      resizeTimer = setTimeout(() => {
+        renderActiveTabCharts();
+        handleTutorialViewportChange();
+      }, 80);
+    });
+
+    if (window.visualViewport && typeof window.visualViewport.addEventListener === "function") {
+      window.visualViewport.addEventListener("resize", () => {
+        handleTutorialViewportChange();
+      });
+    }
+  }
+
+  // ---------- Interactive Watch Tutorial & Responsive Analytical Workspace ----------
+  const tutorial = {
+    active: false,
+    playing: false,
+    completed: false,
+    stageIndex: 0,
+    subActionDone: false,
+    secondSubActionDone: false,
+    stageToken: 0,
+    subTimers: [],
+    advanceTimer: null,
+    resizeSettleTimer: null,
+    driving: false,
+    userScrolledAway: false,
+    lastGuidedScrollY: 0,
+    programmaticScrollUntil: 0,
+    resizeIgnoreScrollUntil: 0,
+    userScrollIntentUntil: 0,
+    lastViewportW: window.innerWidth || 0,
+    lastViewportH: window.innerHeight || 0,
+    activeTargetSelector: null,
+    subFocusSelector: null,
+    resolvedFocusSelector: null,
+  };
+
+  function prefersReducedMotion() {
+    return (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function clearTutorialTimers() {
+    while (tutorial.subTimers.length > 0) {
+      clearTimeout(tutorial.subTimers.pop());
+    }
+    if (tutorial.advanceTimer !== null) {
+      clearTimeout(tutorial.advanceTimer);
+      tutorial.advanceTimer = null;
+    }
+  }
+
+  function clearSpotlight() {
+    document.querySelectorAll(".tutorial-spotlight").forEach((el) => {
+      el.classList.remove("tutorial-spotlight");
     });
   }
 
+  function setOverviewRangeUI(rangeCode) {
+    state.overviewRange = rangeCode;
+    state.overviewHoverIdx = null;
+    document.querySelectorAll("[data-range]").forEach((b) => {
+      b.classList.toggle("active", b.dataset.range === rangeCode);
+    });
+    renderOverviewChart();
+  }
+
+  function setIndicatorRangeUI(rangeCode) {
+    state.indRange = rangeCode;
+    state.indHoverIdx = null;
+    document.querySelectorAll("[data-ind-range]").forEach((b) => {
+      b.classList.toggle("active", b.dataset.indRange === rangeCode);
+    });
+    renderIndicatorCharts();
+  }
+
+  function resetOverviewControlsToDefault() {
+    state.showEma20 = true;
+    state.showEma50 = true;
+    state.showSplit = true;
+    const e20 = document.getElementById("toggle-ema20");
+    const e50 = document.getElementById("toggle-ema50");
+    const sp = document.getElementById("toggle-split");
+    if (e20) e20.checked = true;
+    if (e50) e50.checked = true;
+    if (sp) sp.checked = true;
+    setOverviewRangeUI("1Y");
+  }
+
+  function resetBenchmarksToDefault() {
+    state.activeBenchmarks = { persistence: true, ema20_lag: true };
+    state.benchHoverIdx = null;
+    document.querySelectorAll("#run-toggles input[type='checkbox']").forEach((cb) => {
+      cb.checked = true;
+    });
+    const lr = document.getElementById("loss-readout");
+    if (lr && DATA.baseline && DATA.baseline.leak_free_protocol) {
+      const lf = DATA.baseline.leak_free_protocol;
+      const emaSer = (DATA.synthetic_benchmarks && DATA.synthetic_benchmarks.series || []).find((s) => s.id === "ema20_lag");
+      const emaRmse = emaSer ? emaSer.overall_usd_rmse.toFixed(2) : "14.65";
+      const emaMse = emaSer && typeof emaSer.overall_scaled_mse === "number" ? emaSer.overall_scaled_mse.toFixed(6) : "0.022101";
+      lr.innerHTML =
+        `<span class="c-baseline">SYNTH-EQ Naive Persistence: <strong>$${lf.usd_rmse.toFixed(2)} RMSE (${lf.scaled_mse.toFixed(6)} scaled MSE)</strong></span>` +
+        `<span>SYNTH-EQ Lagged EMA20: <strong>$${emaRmse} RMSE (${emaMse} scaled MSE)</strong></span>` +
+        `<span>Neural Network on SYNTH-EQ: <strong>NOT TRAINED</strong></span>`;
+    }
+  }
+
+  function resetSandboxToDefault() {
+    state.sandboxRefIdx = DATA.series.length - 1;
+    state.sandboxThreshold = 5.0;
+    state.sandboxDrift = 2.5;
+    state.sandboxSwing = 2.0;
+    const sbDate = document.getElementById("sb-date");
+    const sbThresh = document.getElementById("sb-threshold");
+    const sbDrift = document.getElementById("sb-drift");
+    const sbSwing = document.getElementById("sb-swing");
+    if (sbDate) sbDate.value = String(state.sandboxRefIdx);
+    if (sbThresh) sbThresh.value = "5";
+    if (sbDrift) sbDrift.value = "2.5";
+    if (sbSwing) sbSwing.value = "2";
+  }
+
+  const TUTORIAL_STAGES = [
+    {
+      id: "intro-provenance",
+      tab: "overview",
+      targetSelector: "#overview-kpis",
+      compactTargetSelector: "#overview-kpis",
+      title: "Synthetic Dataset Provenance & KPIs",
+      narration:
+        "TSLAIQ runs offline on a 100% synthetic daily series (SYNTH-EQ, 1,500 weekday sessions, fixed seed 20261123) with zero real Tesla or Yahoo Finance market data.",
+      durationMs: 3600,
+      enter() {
+        activateTab("overview");
+        resetOverviewControlsToDefault();
+      },
+    },
+    {
+      id: "overview-chart",
+      tab: "overview",
+      targetSelector: "#overview-chart-card",
+      compactTargetSelector: "#overview-readout",
+      tightCompactSelector: "#overview-chart-stage",
+      checkVisibleSelector: "#overview-chart-stage",
+      title: "Interactive Price, Volume & Range Presets",
+      narration:
+        "Explore the synthetic Close price, EMA20/EMA50 overlays, and daily volume bars. Next, the tutorial widens the range from 1Y to 3Y to reveal the chronological validation split.",
+      durationMs: 4200,
+      subDelayMs: 1500,
+      enter() {
+        activateTab("overview");
+        resetOverviewControlsToDefault();
+      },
+      subAction() {
+        setOverviewRangeUI("3Y");
+      },
+    },
+    {
+      id: "overview-scrub",
+      tab: "overview",
+      targetSelector: "#overview-chart-card",
+      compactTargetSelector: "#overview-readout",
+      tightCompactSelector: "#overview-chart-stage",
+      checkVisibleSelector: "#overview-chart-stage",
+      title: "Session Scrubber & Numerical Readouts",
+      narration:
+        "Every session can be inspected via pointer hover or the keyboard scrubber. Watch the crosshair jump to the synthetic peak close ($338.84 on 2025-03-20) and update live OHLCV values.",
+      durationMs: 4200,
+      subDelayMs: 1400,
+      enter() {
+        activateTab("overview");
+        setOverviewRangeUI("3Y");
+      },
+      subAction() {
+        const { rows } = getRangeSlice("3Y");
+        const peakDate = DATA.meta && DATA.meta.extremes ? DATA.meta.extremes.all_time_high_close_date : "2025-03-20";
+        let idx = rows.findIndex((r) => r[COL.DATE] === peakDate);
+        if (idx < 0) idx = Math.floor(rows.length * 0.65);
+        state.overviewHoverIdx = idx;
+        renderOverviewChart();
+      },
+    },
+    {
+      id: "indicators",
+      tab: "indicators",
+      targetSelector: "#indicators-chart-card",
+      compactTargetSelector: "#ind-block-rsi",
+      checkVisibleSelector: "#ind-block-rsi",
+      title: "Synchronized Technical Indicator Stack",
+      narration:
+        "Inspect RSI(14), MACD(12,26,9) + histogram, and cumulative OBV computed deterministically on SYNTH-EQ. The walkthrough zooms into 3M and steps across the indicator stack.",
+      durationMs: 4800,
+      subDelayMs: 1400,
+      enter() {
+        activateTab("indicators");
+        setIndicatorRangeUI("1Y");
+      },
+      subAction() {
+        setIndicatorRangeUI("3M");
+        const { rows } = getRangeSlice("3M");
+        state.indHoverIdx = Math.floor(rows.length * 0.5);
+        renderIndicatorCharts();
+        focusSubTargetIfNeeded("#ind-block-macd", "#indicators-chart-card");
+      },
+      secondSubDelayMs: 2900,
+      secondSubAction() {
+        focusSubTargetIfNeeded("#ind-block-obv", "#indicators-chart-card");
+      },
+    },
+    {
+      id: "benchmarks",
+      tab: "research",
+      targetSelector: "#research-chart-card",
+      compactTargetSelector: "#loss-readout",
+      tightCompactSelector: "#research-chart-stage",
+      checkVisibleSelector: "#research-chart-stage",
+      title: "Part A — Leak-Free Synthetic Baselines",
+      narration:
+        "Part A plots 20-day rolling USD RMSE on the 278-day chronological split (train-only scaling): Naive Persistence ($5.83 RMSE) outperforms Lagged EMA20 ($14.65 RMSE). No neural network is trained on SYNTH-EQ.",
+      durationMs: 4400,
+      subDelayMs: 1500,
+      enter() {
+        activateTab("research");
+        resetBenchmarksToDefault();
+        renderTrainingChart();
+      },
+      subAction() {
+        const len = DATA.synthetic_benchmarks && DATA.synthetic_benchmarks.dates ? DATA.synthetic_benchmarks.dates.length : 0;
+        if (len > 0) {
+          state.benchHoverIdx = Math.floor(len * 0.55);
+          renderTrainingChart();
+        }
+      },
+    },
+    {
+      id: "archival-research",
+      tab: "research",
+      targetSelector: "#research-comparison-grid",
+      compactTargetSelector: "#research-archival-card",
+      checkVisibleSelector: "#research-archival-card",
+      title: "Part B — Honest Archival Research Record",
+      narration:
+        "Part B is strictly separated from SYNTH-EQ: in the original private engineering project on real historical equity data, none of the logged Keras LSTM models beat trivial naive persistence.",
+      durationMs: 4200,
+      enter() {
+        activateTab("research");
+        resetBenchmarksToDefault();
+        renderTrainingChart();
+      },
+    },
+    {
+      id: "sandbox",
+      tab: "sandbox",
+      targetSelector: "#sandbox-grid",
+      compactTargetSelector: "#sandbox-inputs-card",
+      tightCompactSelector: ".preset-row",
+      checkVisibleSelector: "#sb-signal-banner",
+      title: "Illustrative Hypothetical Rule Sandbox",
+      narration:
+        "The Signal Sandbox tests deterministic ±% threshold rules on user-controlled hypothetical paths (not ML predictions or trading advice). Watch the +7% Upward preset shift BEKLE to AL.",
+      durationMs: 5200,
+      subDelayMs: 1400,
+      enter() {
+        activateTab("sandbox");
+        resetSandboxToDefault();
+        renderSandbox();
+      },
+      subAction() {
+        const bullBtn = document.querySelector('[data-sb-preset="bull"]');
+        if (bullBtn) {
+          tutorial.driving = true;
+          try {
+            bullBtn.click();
+          } finally {
+            tutorial.driving = false;
+          }
+        }
+        focusSubTargetIfNeeded("#sb-signal-banner", "#sandbox-result-card");
+      },
+    },
+    {
+      id: "inspector",
+      tab: "inspector",
+      targetSelector: "#inspector-arch-grid",
+      compactTargetSelector: "#inspector-arch-card",
+      checkVisibleSelector: "#inspector-arch-card",
+      title: "Engineering Inspector & Safe Architecture",
+      narration:
+        "Inspect the private-repo hardening summary: TrainOnlyMinMaxScaler, serializable custom Attention-LSTM layers replacing anonymous Lambda bytecode, and offline verification gates.",
+      durationMs: 4600,
+      subDelayMs: 1600,
+      enter() {
+        activateTab("inspector");
+      },
+      subAction() {
+        tutorial.activeTargetSelector = "#inspector-gates-card";
+        tutorial.subFocusSelector = "#inspector-gates-card";
+        applyStageSpotlight("#inspector-gates-card");
+        if (!tutorial.userScrolledAway) {
+          positionTutorialWorkspace("#inspector-gates-card", { instant: prefersReducedMotion(), force: false });
+        }
+      },
+    },
+    {
+      id: "finish",
+      tab: "overview",
+      targetSelector: "#overview-chart-card",
+      compactTargetSelector: "#overview-readout",
+      tightCompactSelector: "#overview-chart-stage",
+      checkVisibleSelector: "#overview-chart-stage",
+      title: "Walkthrough Complete — Explore Manually",
+      narration:
+        "You have toured TSLAIQ's synthetic charts, synchronized indicators, leak-free baselines, archival research record, hypothetical sandbox, and Inspector. Click Replay or Exit to explore freely.",
+      durationMs: 0,
+      enter() {
+        resetSandboxToDefault();
+        resetBenchmarksToDefault();
+        activateTab("overview");
+        resetOverviewControlsToDefault();
+      },
+    },
+  ];
+
+  function getDockClearanceMetrics(dock) {
+    const vh = window.innerHeight || 768;
+    const vw = window.innerWidth || 1280;
+    const stickyTop = vh <= 620 ? 4 : vw <= 680 ? 6 : 8;
+    const gap = vh <= 620 ? 8 : 12;
+    const dockH = dock ? dock.getBoundingClientRect().height || 0 : 0;
+    const topEdge = stickyTop + dockH + gap;
+    const availH = Math.max(80, vh - topEdge - 6);
+    return { vh, vw, stickyTop, gap, dockH, topEdge, availH };
+  }
+
+  function isElementMeaningfullyVisible(dock, el) {
+    if (!el || !dock) return false;
+    const vh = window.innerHeight || 768;
+    const dr = dock.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    const visibleTop = Math.max(er.top, dr.bottom + 2);
+    const visibleBottom = Math.min(er.bottom, vh - 2);
+    const visibleH = Math.max(0, visibleBottom - visibleTop);
+    if (er.height <= vh - dr.bottom - 12) {
+      return er.top >= dr.bottom + 2 && er.bottom <= vh - 2;
+    }
+    return visibleH >= Math.min(er.height * 0.7, (vh - dr.bottom) * 0.6);
+  }
+
+  function focusSubTargetIfNeeded(focusSelector, spotlightSelector) {
+    tutorial.subFocusSelector = focusSelector;
+    tutorial.resolvedFocusSelector = focusSelector;
+    if (spotlightSelector) {
+      applyStageSpotlight(spotlightSelector);
+    }
+    if (tutorial.userScrolledAway) return;
+    const dock = document.getElementById("tutorialDock");
+    const targetEl = document.querySelector(focusSelector);
+    if (!dock || !targetEl) return;
+    if (!isElementMeaningfullyVisible(dock, targetEl)) {
+      positionTutorialWorkspace(focusSelector, { instant: prefersReducedMotion(), force: true });
+    }
+  }
+
+  function resolveGuidedFocusSelector(dock) {
+    const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+    if (!stage) return tutorial.activeTargetSelector;
+    if (tutorial.subFocusSelector) {
+      const subEl = document.querySelector(tutorial.subFocusSelector);
+      if (subEl) return tutorial.subFocusSelector;
+    }
+
+    const primarySel = tutorial.activeTargetSelector || stage.targetSelector;
+    const compactSel = stage.compactTargetSelector || null;
+    if (!primarySel || !compactSel || compactSel === primarySel) return primarySel;
+
+    const primaryEl = document.querySelector(primarySel);
+    const compactEl = document.querySelector(compactSel);
+    if (!primaryEl || !compactEl) return primarySel;
+
+    const { availH } = getDockClearanceMetrics(dock);
+    const pRect = primaryEl.getBoundingClientRect();
+    const checkEl = stage.checkVisibleSelector ? document.querySelector(stage.checkVisibleSelector) : compactEl;
+    const cRect = (checkEl || compactEl).getBoundingClientRect();
+
+    // If the entire primary card fits, or its key demonstrated content fits cleanly beneath the dock when aligned to primary top, keep the full primary card framed.
+    const keyBottomFromPrimaryTop = cRect.bottom - pRect.top;
+    if (pRect.height <= availH || keyBottomFromPrimaryTop <= availH) {
+      return primarySel;
+    }
+
+    // If an even tighter compact selector is defined (e.g. .preset-row inside #sandbox-inputs-card, or #overview-chart-stage on 320x480), use it only when compactEl pushes that key child below a usable visibility threshold.
+    if (stage.tightCompactSelector) {
+      const tightEl = document.querySelector(stage.tightCompactSelector);
+      if (tightEl) {
+        const compRect = compactEl.getBoundingClientRect();
+        const tightRect = tightEl.getBoundingClientRect();
+        const visibleTight = availH - (tightRect.top - compRect.top);
+        const minNeeded = Math.min(tightRect.height, Math.max(80, tightRect.height * 0.6));
+        if (visibleTight < minNeeded) {
+          return stage.tightCompactSelector;
+        }
+      }
+    }
+
+    return compactSel;
+  }
+
+  function applyStageSpotlight(selector) {
+    clearSpotlight();
+    if (!selector) return;
+    const el = document.querySelector(selector);
+    if (el) el.classList.add("tutorial-spotlight");
+  }
+
+  function computeGuidedScrollY(dock, target) {
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const { vh, stickyTop, topEdge } = getDockClearanceMetrics(dock);
+    const maxScrollY = Math.max(0, (document.documentElement.scrollHeight || 0) - vh);
+    const dockRect = dock.getBoundingClientRect();
+
+    if (!target) {
+      const dockDocTop = dockRect.top + scrollY;
+      return Math.max(0, Math.min(maxScrollY, Math.round(dockDocTop - stickyTop)));
+    }
+
+    const targetRect = target.getBoundingClientRect();
+    const targetDocTop = targetRect.top + scrollY;
+    const desired = targetDocTop - topEdge;
+    return Math.max(0, Math.min(maxScrollY, Math.round(desired)));
+  }
+
+  function isTargetWellFramed(dock, target) {
+    const vh = window.innerHeight || 768;
+    const dockRect = dock.getBoundingClientRect();
+    const dockVisible = dockRect.top >= -1 && dockRect.bottom <= vh + 1;
+    if (!dockVisible) return false;
+    if (!target) return true;
+    const targetRect = target.getBoundingClientRect();
+    const availH = vh - dockRect.bottom - 10;
+    if (targetRect.height <= availH) {
+      return targetRect.top >= dockRect.bottom + 2 && targetRect.bottom <= vh - 2;
+    }
+    return targetRect.top >= dockRect.bottom + 2 && targetRect.top <= dockRect.bottom + 20;
+  }
+
+  function positionTutorialWorkspace(explicitSelector, options) {
+    const opts = options || {};
+    if (!tutorial.active) return;
+    if (tutorial.userScrolledAway && !opts.force) return;
+    const dock = document.getElementById("tutorialDock");
+    if (!dock || dock.hidden) return;
+
+    const selector = explicitSelector || resolveGuidedFocusSelector(dock);
+    tutorial.resolvedFocusSelector = selector;
+    const target = selector ? document.querySelector(selector) : null;
+
+    if (!opts.force && isTargetWellFramed(dock, target)) {
+      tutorial.lastGuidedScrollY = Math.round(window.scrollY || 0);
+      return;
+    }
+
+    const targetY = computeGuidedScrollY(dock, target);
+    const currentY = Math.round(window.scrollY || 0);
+    if (Math.abs(targetY - currentY) <= 2) {
+      tutorial.lastGuidedScrollY = currentY;
+      return;
+    }
+
+    const useInstant = Boolean(opts.instant || prefersReducedMotion());
+    const now = Date.now();
+    tutorial.lastGuidedScrollY = targetY;
+    tutorial.programmaticScrollUntil = now + (useInstant ? 180 : 650);
+    window.scrollTo({
+      top: targetY,
+      behavior: useInstant ? "auto" : "smooth",
+    });
+  }
+
+  function renderTutorialDockUI() {
+    const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+    const total = TUTORIAL_STAGES.length;
+    const dock = document.getElementById("tutorialDock");
+    const watchBtn = document.getElementById("btnWatchTutorial");
+    const stepBadge = document.getElementById("tutorialStepBadge");
+    const stateBadge = document.getElementById("tutorialStateBadge");
+    const titleEl = document.getElementById("tutorialStageTitle");
+    const narrEl = document.getElementById("tutorialNarration");
+    const progEl = document.getElementById("tutorialProgress");
+    const fillEl = document.getElementById("tutorialProgressFill");
+    const prevBtn = document.getElementById("btnTutPrev");
+    const playBtn = document.getElementById("btnTutPlayPause");
+    const nextBtn = document.getElementById("btnTutNext");
+    const srEl = document.getElementById("srAnnouncer");
+
+    if (dock) dock.hidden = !tutorial.active;
+    if (watchBtn) watchBtn.setAttribute("aria-expanded", tutorial.active ? "true" : "false");
+    document.body.classList.toggle("tutorial-active", tutorial.active);
+
+    if (!tutorial.active || !stage) return;
+
+    const stepNum = tutorial.stageIndex + 1;
+    const pct = Math.round((stepNum / total) * 100);
+    if (stepBadge) stepBadge.textContent = `Stage ${stepNum} / ${total}`;
+    if (titleEl) titleEl.textContent = stage.title;
+    if (narrEl) narrEl.textContent = stage.narration;
+    if (progEl) {
+      progEl.setAttribute("aria-valuemax", String(total));
+      progEl.setAttribute("aria-valuenow", String(stepNum));
+    }
+    if (fillEl) fillEl.style.width = `${pct}%`;
+
+    if (stateBadge) {
+      stateBadge.classList.remove("is-paused", "is-complete");
+      if (tutorial.completed) {
+        stateBadge.textContent = "Complete";
+        stateBadge.classList.add("is-complete");
+      } else if (tutorial.playing) {
+        stateBadge.textContent = "Playing";
+      } else {
+        stateBadge.textContent = "Paused";
+        stateBadge.classList.add("is-paused");
+      }
+    }
+
+    if (prevBtn) prevBtn.disabled = tutorial.stageIndex === 0;
+    if (nextBtn) nextBtn.disabled = tutorial.stageIndex >= total - 1;
+    if (playBtn) {
+      if (tutorial.completed) {
+        playBtn.textContent = "Replay";
+        playBtn.setAttribute("aria-pressed", "false");
+      } else if (tutorial.playing) {
+        playBtn.textContent = "Pause";
+        playBtn.setAttribute("aria-pressed", "true");
+      } else {
+        playBtn.textContent = "Play";
+        playBtn.setAttribute("aria-pressed", "false");
+      }
+    }
+
+    if (srEl) {
+      srEl.textContent = `Stage ${stepNum} of ${total}: ${stage.title}`;
+    }
+  }
+
+  function scheduleCurrentStageTimers() {
+    clearTutorialTimers();
+    if (!tutorial.active || !tutorial.playing || tutorial.completed) return;
+    const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+    if (!stage || stage.durationMs <= 0) return;
+
+    const token = tutorial.stageToken;
+    const reduced = prefersReducedMotion();
+    const subDelay = reduced ? Math.min(stage.subDelayMs || 0, 500) : stage.subDelayMs || 0;
+    const totalDuration = reduced ? Math.min(stage.durationMs, 1800) : stage.durationMs;
+
+    if (typeof stage.subAction === "function" && !tutorial.subActionDone) {
+      const tid = setTimeout(() => {
+        tutorial.subTimers = tutorial.subTimers.filter((id) => id !== tid);
+        if (!tutorial.active || !tutorial.playing || tutorial.stageToken !== token) return;
+        tutorial.subActionDone = true;
+        tutorial.driving = true;
+        try {
+          stage.subAction();
+        } finally {
+          tutorial.driving = false;
+        }
+      }, subDelay);
+      tutorial.subTimers.push(tid);
+    }
+
+    if (typeof stage.secondSubAction === "function" && !tutorial.secondSubActionDone) {
+      const secondDelay = reduced
+        ? Math.min(stage.secondSubDelayMs || 1000, 1000)
+        : stage.secondSubDelayMs || 2800;
+      const tid2 = setTimeout(() => {
+        tutorial.subTimers = tutorial.subTimers.filter((id) => id !== tid2);
+        if (!tutorial.active || !tutorial.playing || tutorial.stageToken !== token) return;
+        tutorial.secondSubActionDone = true;
+        tutorial.driving = true;
+        try {
+          stage.secondSubAction();
+        } finally {
+          tutorial.driving = false;
+        }
+      }, secondDelay);
+      tutorial.subTimers.push(tid2);
+    }
+
+    tutorial.advanceTimer = setTimeout(() => {
+      tutorial.advanceTimer = null;
+      if (!tutorial.active || !tutorial.playing || tutorial.stageToken !== token) return;
+      if (tutorial.stageIndex + 1 < TUTORIAL_STAGES.length) {
+        goToTutorialStage(tutorial.stageIndex + 1, { autoplay: true });
+      }
+    }, totalDuration);
+  }
+
+  function goToTutorialStage(index, options) {
+    const opts = options || {};
+    const clamped = Math.max(0, Math.min(TUTORIAL_STAGES.length - 1, index));
+    clearTutorialTimers();
+    tutorial.stageToken += 1;
+    tutorial.stageIndex = clamped;
+    tutorial.subActionDone = false;
+    tutorial.secondSubActionDone = false;
+    tutorial.subFocusSelector = null;
+
+    const stage = TUTORIAL_STAGES[clamped];
+    const isFinal = clamped === TUTORIAL_STAGES.length - 1;
+    tutorial.completed = isFinal;
+    tutorial.playing = isFinal ? false : Boolean(opts.autoplay);
+    tutorial.activeTargetSelector = stage.targetSelector || null;
+
+    tutorial.driving = true;
+    try {
+      if (typeof stage.enter === "function") stage.enter();
+    } finally {
+      tutorial.driving = false;
+    }
+
+    applyStageSpotlight(tutorial.activeTargetSelector);
+    renderTutorialDockUI();
+
+    requestAnimationFrame(() => {
+      renderActiveTabCharts();
+      positionTutorialWorkspace(null, {
+        instant: Boolean(opts.instant),
+        force: Boolean(opts.forceScroll),
+      });
+    });
+
+    if (tutorial.playing) {
+      scheduleCurrentStageTimers();
+    }
+  }
+
+  function startTutorial() {
+    tutorial.active = true;
+    tutorial.userScrolledAway = false;
+    tutorial.lastViewportW = window.innerWidth || 0;
+    tutorial.lastViewportH = window.innerHeight || 0;
+    goToTutorialStage(0, { autoplay: true, forceScroll: true });
+    const playBtn = document.getElementById("btnTutPlayPause");
+    if (playBtn && typeof playBtn.focus === "function") {
+      try {
+        playBtn.focus({ preventScroll: true });
+      } catch (e) {
+        playBtn.focus();
+      }
+    }
+  }
+
+  function pauseTutorial() {
+    if (!tutorial.active || !tutorial.playing) return;
+    tutorial.playing = false;
+    clearTutorialTimers();
+    renderTutorialDockUI();
+  }
+
+  function resumeTutorial() {
+    if (!tutorial.active) return;
+    if (tutorial.completed) {
+      restartTutorial();
+      return;
+    }
+    tutorial.playing = true;
+    renderTutorialDockUI();
+    scheduleCurrentStageTimers();
+  }
+
+  function restartTutorial() {
+    if (!tutorial.active) {
+      startTutorial();
+      return;
+    }
+    tutorial.userScrolledAway = false;
+    goToTutorialStage(0, { autoplay: true, forceScroll: true });
+  }
+
+  function exitTutorial(options) {
+    const opts = options || {};
+    clearTutorialTimers();
+    if (tutorial.resizeSettleTimer !== null) {
+      clearTimeout(tutorial.resizeSettleTimer);
+      tutorial.resizeSettleTimer = null;
+    }
+    tutorial.active = false;
+    tutorial.playing = false;
+    tutorial.completed = false;
+    tutorial.subActionDone = false;
+    tutorial.secondSubActionDone = false;
+    tutorial.userScrolledAway = false;
+    tutorial.activeTargetSelector = null;
+    tutorial.subFocusSelector = null;
+    tutorial.resolvedFocusSelector = null;
+    tutorial.stageToken += 1;
+    clearSpotlight();
+    renderTutorialDockUI();
+    requestAnimationFrame(renderActiveTabCharts);
+    if (opts.restoreFocus !== false) {
+      const watchBtn = document.getElementById("btnWatchTutorial");
+      if (watchBtn && typeof watchBtn.focus === "function") {
+        try {
+          watchBtn.focus({ preventScroll: true });
+        } catch (e) {
+          watchBtn.focus();
+        }
+      }
+    }
+  }
+
+  function handleTutorialViewportChange() {
+    const now = Date.now();
+    const curW = window.innerWidth || 0;
+    const curH = window.innerHeight || 0;
+    tutorial.lastViewportW = curW;
+    tutorial.lastViewportH = curH;
+    tutorial.resizeIgnoreScrollUntil = now + 450;
+
+    if (!tutorial.active) return;
+
+    const reposition = () => {
+      if (!tutorial.active) return;
+      renderActiveTabCharts();
+      if (!tutorial.userScrolledAway) {
+        positionTutorialWorkspace(null, { instant: true, force: true });
+      }
+    };
+
+    requestAnimationFrame(reposition);
+    if (tutorial.resizeSettleTimer !== null) {
+      clearTimeout(tutorial.resizeSettleTimer);
+    }
+    tutorial.resizeSettleTimer = setTimeout(() => {
+      tutorial.resizeSettleTimer = null;
+      reposition();
+    }, 120);
+  }
+
+  function initTutorialEvents() {
+    const watchBtn = document.getElementById("btnWatchTutorial");
+    const prevBtn = document.getElementById("btnTutPrev");
+    const playBtn = document.getElementById("btnTutPlayPause");
+    const nextBtn = document.getElementById("btnTutNext");
+    const restartBtn = document.getElementById("btnTutRestart");
+    const exitBtn = document.getElementById("btnTutExit");
+
+    if (watchBtn) {
+      watchBtn.addEventListener("click", () => {
+        if (tutorial.active) {
+          restartTutorial();
+        } else {
+          startTutorial();
+        }
+      });
+    }
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        if (!tutorial.active || tutorial.stageIndex <= 0) return;
+        goToTutorialStage(tutorial.stageIndex - 1, { autoplay: false });
+      });
+    }
+    if (playBtn) {
+      playBtn.addEventListener("click", () => {
+        if (!tutorial.active) return;
+        if (tutorial.completed) {
+          restartTutorial();
+        } else if (tutorial.playing) {
+          pauseTutorial();
+        } else {
+          resumeTutorial();
+        }
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        if (!tutorial.active || tutorial.stageIndex >= TUTORIAL_STAGES.length - 1) return;
+        goToTutorialStage(tutorial.stageIndex + 1, { autoplay: false });
+      });
+    }
+    if (restartBtn) {
+      restartBtn.addEventListener("click", () => restartTutorial());
+    }
+    if (exitBtn) {
+      exitBtn.addEventListener("click", () => exitTutorial({ restoreFocus: true }));
+    }
+
+    // Escape key cleanly exits tutorial
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape" && tutorial.active) {
+        ev.preventDefault();
+        exitTutorial({ restoreFocus: true });
+      }
+      if (tutorial.active) {
+        const tag = ev.target && ev.target.tagName ? ev.target.tagName.toUpperCase() : "";
+        if (tag !== "INPUT" && tag !== "SELECT" && tag !== "TEXTAREA") {
+          if (ev.key === "PageDown" || ev.key === "PageUp" || ev.key === "ArrowDown" || ev.key === "ArrowUp" || ev.key === "Home" || ev.key === "End" || ev.key === " ") {
+            tutorial.programmaticScrollUntil = 0;
+            tutorial.userScrollIntentUntil = Date.now() + 900;
+          }
+        }
+      }
+    });
+
+    // Genuine user scroll intent tracking (wheel & touchmove)
+    window.addEventListener(
+      "wheel",
+      () => {
+        if (tutorial.active) {
+          tutorial.programmaticScrollUntil = 0;
+          tutorial.userScrollIntentUntil = Date.now() + 900;
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "touchmove",
+      () => {
+        if (tutorial.active) {
+          tutorial.programmaticScrollUntil = 0;
+          tutorial.userScrollIntentUntil = Date.now() + 900;
+        }
+      },
+      { passive: true }
+    );
+
+    // Pre/post-resize scroll discrimination
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!tutorial.active) return;
+        const now = Date.now();
+        const curW = window.innerWidth || 0;
+        const curH = window.innerHeight || 0;
+        if (curW !== tutorial.lastViewportW || curH !== tutorial.lastViewportH) {
+          tutorial.lastViewportW = curW;
+          tutorial.lastViewportH = curH;
+          tutorial.resizeIgnoreScrollUntil = now + 450;
+          return;
+        }
+        if (now < tutorial.resizeIgnoreScrollUntil || now < tutorial.programmaticScrollUntil) {
+          return;
+        }
+        if (now <= tutorial.userScrollIntentUntil) {
+          const curY = Math.round(window.scrollY || 0);
+          if (Math.abs(curY - tutorial.lastGuidedScrollY) > 20) {
+            tutorial.userScrolledAway = true;
+          }
+        }
+      },
+      { passive: true }
+    );
+
+    // Manual dashboard interactions safely pause autoplay without fighting the user
+    const mainEl = document.getElementById("main-content");
+    if (mainEl) {
+      mainEl.addEventListener("pointerdown", (ev) => {
+        if (!tutorial.active || !tutorial.playing || tutorial.driving) return;
+        const dock = document.getElementById("tutorialDock");
+        if (dock && dock.contains(ev.target)) return;
+        pauseTutorial();
+      });
+    }
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (tutorial.active && tutorial.playing && !tutorial.driving) {
+          pauseTutorial();
+        }
+      });
+    });
+  }
+
+  // Read-only verification & inspection API
+  window.__TSLAIQ_TUTORIAL__ = {
+    getState() {
+      const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+      const sbCode = document.getElementById("sb-signal-code");
+      return {
+        active: tutorial.active,
+        playing: tutorial.playing,
+        completed: tutorial.completed,
+        stageIndex: tutorial.stageIndex,
+        stageId: stage ? stage.id : null,
+        totalStages: TUTORIAL_STAGES.length,
+        subActionDone: tutorial.subActionDone,
+        hasPendingTimers: tutorial.subTimers.length > 0 || tutorial.advanceTimer !== null,
+        userScrolledAway: tutorial.userScrolledAway,
+        lastGuidedScrollY: tutorial.lastGuidedScrollY,
+        activeTargetSelector: tutorial.activeTargetSelector,
+        resolvedFocusSelector: tutorial.resolvedFocusSelector,
+        activeTab: state.activeTab,
+        overviewRange: state.overviewRange,
+        overviewHoverIdx: state.overviewHoverIdx,
+        indRange: state.indRange,
+        indHoverIdx: state.indHoverIdx,
+        benchHoverIdx: state.benchHoverIdx,
+        sandboxDrift: state.sandboxDrift,
+        sandboxSignal: sbCode ? sbCode.textContent.trim() : null,
+      };
+    },
+    stages: TUTORIAL_STAGES.map((s) => ({
+      id: s.id,
+      tab: s.tab,
+      targetSelector: s.targetSelector,
+      title: s.title,
+      hasSubAction: typeof s.subAction === "function",
+    })),
+  };
+
   hydrateMetadata();
   initEvents();
+  initTutorialEvents();
   renderOverviewChart();
 })();

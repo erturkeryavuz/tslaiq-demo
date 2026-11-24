@@ -1,5 +1,7 @@
 # TSLAIQ Demo — Synthetic Time-Series Analytics & ML Methodology Showcase
 
+[![TSLAIQ Demo — Synthetic Time-Series Analytics & ML Methodology Showcase](media/tslaiq-readme-hero.png)](https://erturkeryavuz.github.io/tslaiq-demo/)
+
 **Live Interactive Showcase (GitHub Pages):** [https://erturkeryavuz.github.io/tslaiq-demo/](https://erturkeryavuz.github.io/tslaiq-demo/)
 
 A sanitized, self-contained static portfolio showcase for **TSLAIQ** by **Ertürk Eryavuz**, built over a **100% synthetic daily equity dataset (`SYNTH-EQ`)** with zero real market data, zero external runtime dependencies, and transparent separation between synthetic demonstration outputs and archival research conclusions.
@@ -15,7 +17,7 @@ A sanitized, self-contained static portfolio showcase for **TSLAIQ** by **Ertür
 
 - **Part A — Synthetic Interactive Demonstration (`SYNTH-EQ`):**
   - Multi-regime geometric random walk with stochastic volatility clustering generated purely via Python stdlib (`random.Random(20261123)`).
-  - Interactive OHLCV + volume Canvas chart, synchronized `RSI(14)`, `EMA20`, `EMA50`, `MACD(12,26,9)`, and `OBV` indicator stack, leak-free chronological split (`80/20`, train-only scaler), held-out **Naive Persistence (`$5.83` USD RMSE)** vs. **Lagged EMA20 (`$14.65` USD RMSE)** rolling RMSE comparison, and an illustrative deterministic threshold-rule sandbox.
+  - Interactive OHLCV + volume Canvas chart, synchronized `RSI(14)`, `EMA20`, `EMA50`, `MACD(12,26,9)`, and `OBV` indicator stack, leak-free chronological split (`80/20`, train-only scaler), held-out **Naive Persistence (`$5.83` USD RMSE)** vs. **Lagged EMA20 (`$14.65` USD RMSE)** rolling RMSE comparison, an illustrative deterministic threshold-rule sandbox, and a **9-stage Watch Tutorial** with play/pause, stepping, restart, responsive guided framing, and reduced-motion support.
 - **Part B — Archival Private Research Summary (Separate):**
   - In the original private engineering project (conducted on real historical equity data — **not** `SYNTH-EQ`), four historical Keras LSTM / Attention-LSTM training runs were logged.
   - **Key honest conclusion:** None of the historically logged LSTM models demonstrated predictive superiority over the trivial naive persistence baseline (`y[t] = y[t-1]`).
@@ -39,3 +41,4 @@ python3 -m http.server 8080 --directory docs
 
 - [docs/THIRD-PARTY-NOTICES.md](docs/THIRD-PARTY-NOTICES.md)
 - Live notices page: [https://erturkeryavuz.github.io/tslaiq-demo/notices.html](https://erturkeryavuz.github.io/tslaiq-demo/notices.html)
+- Repository cover artwork in `media/` and editable vector sources in `media/src/` (`tslaiq-readme-hero` and `tslaiq-social-preview`) are 100% original vector graphics authored specifically for this showcase using only synthetic `SYNTH-EQ` metrics, with zero third-party photographs, Tesla branding, or real market charts.
