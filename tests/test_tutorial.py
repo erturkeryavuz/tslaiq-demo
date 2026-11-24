@@ -70,7 +70,12 @@ function makeEl(tag, id = "", classes = [], attrs = {{}}) {{
     focus(opts) {{ env.lastFocused = el.id || el.tagName; env.lastFocusOpts = opts || null; }},
     querySelector(sel) {{
       if (sel === "input") return this.children.find((c) => c.tagName === "INPUT") || null;
+      if (sel === ".chart-stage-sm") return this.children.find((c) => c.classList && c.classList.contains("chart-stage-sm")) || null;
       return null;
+    }},
+    querySelectorAll(sel) {{
+      if (sel === ".chart-stage-sm") return this.children.filter((c) => c.classList && c.classList.contains("chart-stage-sm"));
+      return [];
     }},
     getBoundingClientRect() {{
       return {{
@@ -217,7 +222,34 @@ const docListeners = {{}};
 const vvListeners = {{}};
 
 const body = makeEl("body");
-const docEl = {{ scrollHeight: 2400 }};
+const rootCssVars = {{}};
+const docEl = {{
+  scrollHeight: 2400,
+  style: {{
+    setProperty(k, v) {{ rootCssVars[k] = String(v); }},
+    removeProperty(k) {{ delete rootCssVars[k]; }},
+    getPropertyValue(k) {{ return rootCssVars[k] || ""; }},
+  }},
+}};
+const overviewControls = reg(makeEl("div", "mock-overview-controls", ["controls-group"]));
+overviewControls._docTop = 530;
+overviewControls._height = 32;
+const overviewScrubberRow = reg(makeEl("div", "mock-scrubber-row", ["scrubber-row"]));
+overviewScrubberRow._docTop = 1000;
+overviewScrubberRow._height = 22;
+const overviewScrubberLabel = byId.get("overview-scrubber-label");
+overviewScrubberLabel._docTop = 1000;
+overviewScrubberLabel._height = 20;
+const indStagesMock = [0, 1, 2].map((i) => {{
+  const st = makeEl("div", "", ["chart-stage", "chart-stage-sm"]);
+  st._height = 188;
+  byId.get("indicators-chart-card").appendChild(st);
+  return st;
+}});
+const sbStageMock = makeEl("div", "", ["chart-stage", "chart-stage-sm"]);
+sbStageMock._docTop = 1180;
+sbStageMock._height = 188;
+byId.get("sandbox-result-card").appendChild(sbStageMock);
 const document = {{
   body,
   documentElement: docEl,
@@ -241,9 +273,13 @@ const document = {{
     return el;
   }},
   querySelector(sel) {{
-    if (sel.startsWith("#")) return byId.get(sel.slice(1)) || null;
+    if (sel.startsWith("#") && !sel.includes(" ")) return byId.get(sel.slice(1)) || null;
     if (sel === '[data-sb-preset="bull"]') return sbPresets[0];
     if (sel === ".preset-row") return presetRow;
+    if (sel === "#overview-chart-card .controls-group") return overviewControls;
+    if (sel === "#overview-chart-card .scrubber-row") return overviewScrubberRow;
+    if (sel === "#sandbox-result-card .chart-stage-sm") return sbStageMock;
+    if (sel === "#indicators-chart-card .segmented") return indRangeBtns[0];
     return null;
   }},
   querySelectorAll(sel) {{
@@ -252,6 +288,7 @@ const document = {{
     if (sel === "[data-range]") return rangeBtns;
     if (sel === "[data-ind-range]") return indRangeBtns;
     if (sel === "[data-sb-preset]") return sbPresets;
+    if (sel === "#indicators-chart-card .chart-stage-sm") return indStagesMock;
     if (sel === ".tutorial-spotlight") return allEls.filter((e) => e.classList.contains("tutorial-spotlight"));
     if (sel === "#run-toggles input[type='checkbox']") {{
       const rt = byId.get("run-toggles");
@@ -676,6 +713,177 @@ class TSLAIQTutorialTests(unittest.TestCase):
         self.assertLess(out["s2Compact"]["canvasTop"], 400)
         self.assertEqual(out["s6CompactFocus"], "#research-archival-card")
         self.assertEqual(out["remainingTimers"], 0)
+
+    def test_adaptive_viewport_fitting_indicators_stack_and_exit_restoration(self):
+        out = _run_node_harness(
+            """
+            // Configure realistic desktop card overheads for adaptive layout math
+            const ovCard = byId.get("overview-chart-card");
+            const ovStage = byId.get("overview-chart-stage");
+            ovCard._docTop = 470;
+            ovCard._height = 494; // 138px chrome + 356px stage
+            ovStage._docTop = 580;
+            ovStage._height = 356;
+
+            const indCard = byId.get("indicators-chart-card");
+            indCard._docTop = 470;
+            indCard._height = 733; // 169px chrome + 3 * 188px stages
+
+            windowObj.innerWidth = 1280;
+            windowObj.innerHeight = 650;
+            dock._height = 80;
+
+            btnWatch.click(); // Stage 1 intro-provenance
+            const s1 = {
+              density: body.dataset.tutorialDensity,
+              kpisMode: body.dataset.tutorialKpis,
+              stageAttr: body.dataset.tutorialStage,
+            };
+
+            // Stage 2 overview-chart at 1280x650: compact density, KPIs collapsed, price chart adapted
+            btnNext.click();
+            const s2Compact650 = {
+              density: body.dataset.tutorialDensity,
+              kpisMode: body.dataset.tutorialKpis,
+              priceVar: rootCssVars["--tut-price-chart-h"],
+              adaptive: api.getState().adaptiveLayout,
+            };
+
+            // Height-only resize down to 1280x540 -> price chart shrinks proportionally below 356px without opt-out
+            windowObj.innerHeight = 540;
+            windowObj.dispatchEvent({ type: "resize" });
+            advanceTime(250);
+            const s2Tight540 = {
+              density: body.dataset.tutorialDensity,
+              priceVar: rootCssVars["--tut-price-chart-h"],
+              priceH: api.getState().adaptiveLayout.priceChartH,
+              userAway: api.getState().userScrolledAway,
+            };
+
+            // Tall desktop 1440x900 -> standard density, KPIs in ribbon mode, full 356px chart
+            windowObj.innerWidth = 1440;
+            windowObj.innerHeight = 900;
+            dock._height = 97;
+            windowObj.dispatchEvent({ type: "resize" });
+            advanceTime(250);
+            const s2Tall900 = {
+              density: body.dataset.tutorialDensity,
+              kpisMode: body.dataset.tutorialKpis,
+              priceH: api.getState().adaptiveLayout.priceChartH,
+            };
+
+            // Stage 4 indicators at 1280x650 -> simultaneous 3-indicator stack enabled (per-chart >= 112px)
+            windowObj.innerWidth = 1280;
+            windowObj.innerHeight = 650;
+            dock._height = 80;
+            btnNext.click(); // Stage 3
+            btnNext.click(); // Stage 4 indicators
+            const s4Desktop650 = {
+              indVar: rootCssVars["--tut-ind-chart-h"],
+              indH: api.getState().adaptiveLayout.indChartH,
+              simultaneous: api.getState().adaptiveLayout.indicatorsSimultaneous,
+            };
+
+            // Narrow mobile 390x844 -> simultaneous disabled so sequential RSI->MACD->OBV takes over
+            windowObj.innerWidth = 390;
+            windowObj.innerHeight = 844;
+            dock._height = 220;
+            windowObj.dispatchEvent({ type: "resize" });
+            advanceTime(250);
+            const s4Mobile = {
+              simultaneous: api.getState().adaptiveLayout.indicatorsSimultaneous,
+              indH: api.getState().adaptiveLayout.indChartH,
+            };
+
+            // Exit restores original layout and removes all tutorial attributes and CSS custom properties
+            btnExit.click();
+            const afterExit = {
+              activeClass: body.classList.contains("tutorial-active"),
+              datasetKeys: Object.keys(body.dataset).filter((k) => k.startsWith("tutorial")),
+              cssVarsRemaining: Object.keys(rootCssVars),
+              remainingTimers: timers.size,
+            };
+
+            return { s1, s2Compact650, s2Tight540, s2Tall900, s4Desktop650, s4Mobile, afterExit };
+            """
+        )
+
+        self.assertEqual(out["s1"]["density"], "compact")
+        self.assertEqual(out["s1"]["kpisMode"], "full")
+        self.assertEqual(out["s1"]["stageAttr"], "intro-provenance")
+
+        self.assertEqual(out["s2Compact650"]["density"], "compact")
+        self.assertEqual(out["s2Compact650"]["kpisMode"], "collapsed")
+        self.assertEqual(out["s2Compact650"]["priceVar"], "356px")
+
+        self.assertEqual(out["s2Tight540"]["density"], "tight")
+        self.assertLess(out["s2Tight540"]["priceH"], 356)
+        self.assertGreaterEqual(out["s2Tight540"]["priceH"], 184)
+        self.assertFalse(out["s2Tight540"]["userAway"])
+
+        self.assertEqual(out["s2Tall900"]["density"], "standard")
+        self.assertEqual(out["s2Tall900"]["kpisMode"], "ribbon")
+        self.assertEqual(out["s2Tall900"]["priceH"], 356)
+
+        self.assertTrue(out["s4Desktop650"]["simultaneous"])
+        self.assertGreaterEqual(out["s4Desktop650"]["indH"], 112)
+        self.assertLessEqual(out["s4Desktop650"]["indH"], 188)
+        self.assertEqual(out["s4Desktop650"]["indVar"], f"{out['s4Desktop650']['indH']}px")
+
+        self.assertFalse(out["s4Mobile"]["simultaneous"])
+        self.assertEqual(out["s4Mobile"]["indH"], 186)
+
+        self.assertFalse(out["afterExit"]["activeClass"])
+        self.assertEqual(out["afterExit"]["datasetKeys"], [])
+        self.assertEqual(out["afterExit"]["cssVarsRemaining"], [])
+        self.assertEqual(out["afterExit"]["remainingTimers"], 0)
+
+    def test_visibility_acceptance_rejects_partial_clipping_and_stale_stage1_scroll(self):
+        out = _run_node_harness(
+            """
+            // Reproduce owner Stage 3 1280x650 scenario: chart card fits within availH once scrolled,
+            // but Stage 1 leaves scrollY positioned so KPIs sit above and canvas/scrubber extend below 650px.
+            windowObj.innerWidth = 1280;
+            windowObj.innerHeight = 650;
+            dock._height = 80;
+
+            const ovCard = byId.get("overview-chart-card");
+            const ovStage = byId.get("overview-chart-stage");
+            ovCard._docTop = 520;
+            ovCard._height = 492;
+            overviewControls._docTop = 532;
+            overviewControls._height = 32;
+            overviewReadout._docTop = 572;
+            overviewReadout._height = 30;
+            ovStage._docTop = 610;
+            ovStage._height = 356;
+            overviewScrubberRow._docTop = 974;
+            overviewScrubberRow._height = 22;
+            overviewScrubberLabel._docTop = 974;
+            overviewScrubberLabel._height = 20;
+
+            btnWatch.click(); // Stage 1 (scrolls to KPIs)
+            const s1ScrollY = windowObj.scrollY;
+            btnNext.click();  // Stage 2
+            btnNext.click();  // Stage 3 overview-scrub
+            const s3State = api.getState();
+
+            return {
+              s1ScrollY,
+              s3ScrollY: windowObj.scrollY,
+              resolvedFocus: s3State.resolvedFocusSelector,
+              reqVis: s3State.requiredVisibility,
+              scrubberBottom: overviewScrubberRow.getBoundingClientRect().bottom,
+              canvasBottom: ovStage.getBoundingClientRect().bottom,
+            };
+            """
+        )
+
+        self.assertGreater(out["s3ScrollY"], out["s1ScrollY"])
+        self.assertEqual(out["resolvedFocus"], "#overview-chart-card")
+        self.assertTrue(out["reqVis"]["allFullyVisible"])
+        self.assertLessEqual(out["canvasBottom"], 650)
+        self.assertLessEqual(out["scrubberBottom"], 650)
 
 
 if __name__ == "__main__":

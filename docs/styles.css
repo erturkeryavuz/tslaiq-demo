@@ -1495,6 +1495,285 @@ a:focus-visible {
   }
 }
 
+/* ==================== TUTORIAL-ONLY ADAPTIVE ANALYTICAL WORKSPACE ==================== */
+body.tutorial-active .tutorial-dock {
+  box-shadow: 0 -12px 0 0 var(--bg), 0 16px 38px rgba(0, 0, 0, 0.56);
+}
+
+body.tutorial-active #overview-chart-stage {
+  height: var(--tut-price-chart-h, 356px);
+}
+
+body.tutorial-active #panel-indicators .chart-stage-sm {
+  height: var(--tut-ind-chart-h, 188px);
+}
+
+body.tutorial-active #research-chart-stage {
+  height: var(--tut-research-chart-h, 310px);
+}
+
+body.tutorial-active #panel-sandbox .chart-stage-sm {
+  height: var(--tut-sandbox-chart-h, 188px);
+}
+
+/* Temporarily collapse or ribbon-compact nonessential KPI cards during chart-focused tutorial stages */
+body.tutorial-active[data-tutorial-kpis="collapsed"] #overview-kpis {
+  display: none;
+}
+
+body.tutorial-active[data-tutorial-kpis="ribbon"] #overview-kpis {
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+body.tutorial-active[data-tutorial-kpis="ribbon"] #overview-kpis .kpi-card {
+  padding: 7px 11px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+body.tutorial-active[data-tutorial-kpis="ribbon"] #overview-kpis .kpi-label {
+  font-size: 9.8px;
+}
+
+body.tutorial-active[data-tutorial-kpis="ribbon"] #overview-kpis .kpi-value {
+  font-size: 16px;
+  margin-top: 0;
+}
+
+body.tutorial-active[data-tutorial-kpis="ribbon"] #overview-kpis .kpi-sub {
+  display: none;
+}
+
+/* Desktop chart-focused tutorial ergonomics: single-row card headers & dense analytical spacing */
+@media (min-width: 900px) {
+  body.tutorial-active #overview-chart-card .panel-head,
+  body.tutorial-active #indicators-chart-card .panel-head,
+  body.tutorial-active #research-chart-card .panel-head {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-bottom: 8px;
+  }
+
+  body.tutorial-active #overview-chart-card .panel-desc,
+  body.tutorial-active #indicators-chart-card .panel-desc,
+  body.tutorial-active #research-chart-card .panel-desc {
+    display: none;
+  }
+
+  body.tutorial-active #overview-chart-card .panel-head > div:first-child,
+  body.tutorial-active #indicators-chart-card .panel-head > div:first-child,
+  body.tutorial-active #research-chart-card .panel-head > div:first-child {
+    min-width: 0;
+  }
+
+  body.tutorial-active #overview-chart-card .controls-group,
+  body.tutorial-active #indicators-chart-card .segmented,
+  body.tutorial-active #research-chart-card #run-toggles {
+    flex-shrink: 0;
+  }
+
+  body.tutorial-active #overview-chart-card h2,
+  body.tutorial-active #indicators-chart-card h2,
+  body.tutorial-active #research-chart-card h2 {
+    font-size: 15.5px;
+    line-height: 1.25;
+  }
+}
+
+/* Adaptive compact / tight tutorial workspace density (e.g., 1280x650, 1280x720, 1366x768) */
+body.tutorial-active[data-tutorial-density="compact"] .tutorial-dock,
+body.tutorial-active[data-tutorial-density="tight"] .tutorial-dock {
+  top: 6px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+
+body.tutorial-active[data-tutorial-density="tight"] .tutorial-dock {
+  top: 4px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .tutorial-dock-top {
+  gap: 6px 12px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .tutorial-stage-title {
+  font-size: 14px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .tut-btn {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .tutorial-progress-track {
+  margin-top: 6px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .tutorial-narration {
+  margin-top: 5px;
+  font-size: 12.2px;
+  line-height: 1.38;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .panel-card,
+body.tutorial-active[data-tutorial-density="tight"] .panel-card {
+  padding: 12px 15px;
+  margin-bottom: 12px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .panel-head-compact,
+body.tutorial-active[data-tutorial-density="tight"] .panel-head-compact {
+  margin-bottom: 8px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .readout-strip,
+body.tutorial-active[data-tutorial-density="tight"] .readout-strip {
+  padding: 5px 11px;
+  margin-bottom: 8px;
+  font-size: 11.8px;
+  gap: 4px 13px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .scrubber-row,
+body.tutorial-active[data-tutorial-density="tight"] .scrubber-row {
+  margin-top: 7px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .callout,
+body.tutorial-active[data-tutorial-density="tight"] .callout {
+  padding: 8px 13px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+body.tutorial-active .indicator-stack {
+  gap: 8px;
+}
+
+body.tutorial-active .subchart-title {
+  font-size: 12.2px;
+  margin-bottom: 4px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .indicator-stack,
+body.tutorial-active[data-tutorial-density="tight"] .indicator-stack {
+  gap: 6px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .subchart-title,
+body.tutorial-active[data-tutorial-density="tight"] .subchart-title {
+  font-size: 11.8px;
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .two-col-grid {
+  gap: 12px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .data-table th,
+body.tutorial-active[data-tutorial-density="compact"] .data-table td {
+  padding: 6px 9px;
+  font-size: 12.2px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] #historical-summary-list {
+  gap: 6px !important;
+  font-size: 12.5px !important;
+  line-height: 1.42 !important;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .form-stack {
+  gap: 9px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .form-field {
+  gap: 3px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .form-field label {
+  font-size: 12.2px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .input-select {
+  padding: 6px 9px;
+  font-size: 12.2px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .field-hint {
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .preset-row {
+  gap: 6px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .btn-chip {
+  padding: 5px 9px;
+  font-size: 11.5px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .signal-banner {
+  padding: 8px 12px;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .signal-code {
+  font-size: 20px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .signal-msg {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .rule-trace {
+  margin-top: 7px;
+  padding: 7px 10px;
+  font-size: 11.3px;
+  line-height: 1.42;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .footnote {
+  margin-top: 7px;
+  font-size: 11.4px;
+  line-height: 1.38;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .arch-flow {
+  gap: 4px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .arch-node {
+  padding: 7px 10px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .arch-arrow {
+  font-size: 11px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .gate-grid {
+  gap: 10px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .gate-item {
+  padding: 10px 12px;
+}
+
+body.tutorial-active[data-tutorial-density="compact"] .gate-item p {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

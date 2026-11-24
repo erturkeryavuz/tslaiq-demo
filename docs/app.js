@@ -77,7 +77,7 @@
     const rect = canvas.parentElement.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const width = Math.max(260, Math.floor(rect.width));
-    const height = Math.max(140, Math.floor(rect.height));
+    const height = Math.max(96, Math.floor(rect.height));
     if (canvas.width !== Math.floor(width * dpr) || canvas.height !== Math.floor(height * dpr)) {
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
@@ -113,13 +113,14 @@
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = "#8ca0bf";
     ctx.textBaseline = "top";
-    const tickCount = plotW < 380 ? 3 : plotW < 560 ? 4 : 6;
+    const tickCount = plotW < 230 ? 2 : plotW < 380 ? 3 : plotW < 560 ? 4 : 6;
+    const labelOffset = pad.bottom <= 22 ? 5 : 8;
     for (let i = 0; i < tickCount; i++) {
       const frac = tickCount === 1 ? 0 : i / (tickCount - 1);
       const idx = Math.min(rows.length - 1, Math.round(frac * (rows.length - 1)));
       const x = pad.left + frac * plotW;
       ctx.textAlign = i === 0 ? "left" : i === tickCount - 1 ? "right" : "center";
-      ctx.fillText(rows[idx][COL.DATE], x, height - pad.bottom + 8);
+      ctx.fillText(rows[idx][COL.DATE], x, height - pad.bottom + labelOffset);
     }
   }
 
@@ -272,12 +273,14 @@
     updateOverviewReadout(rows[activeIdx]);
 
     const { ctx, width, height } = setupCanvas(canvas);
-    const pad = { top: 18, right: 18, bottom: 28, left: 64 };
+    const compact = height < 240;
+    const pad = { top: compact ? 14 : 18, right: 18, bottom: compact ? 24 : 28, left: 64 };
     const plotW = width - pad.left - pad.right;
     const totalH = height - pad.top - pad.bottom;
+    const volGap = compact ? 10 : 14;
     const priceH = Math.floor(totalH * 0.74);
-    const volTop = pad.top + priceH + 14;
-    const volH = totalH - priceH - 14;
+    const volTop = pad.top + priceH + volGap;
+    const volH = Math.max(18, totalH - priceH - volGap);
 
     let minP = Infinity;
     let maxP = -Infinity;
@@ -407,12 +410,16 @@
         : rows.length - 1;
     updateIndicatorReadout(rows[activeIdx]);
 
-    const pad = { top: 14, right: 18, bottom: 24, left: 64 };
+    const makeIndPad = (h) =>
+      h < 140
+        ? { top: 10, right: 16, bottom: 20, left: 60 }
+        : { top: 14, right: 18, bottom: 24, left: 64 };
 
     // 1. RSI(14)
     (function () {
       const canvas = document.getElementById("chart-rsi");
       const { ctx, width, height } = setupCanvas(canvas);
+      const pad = makeIndPad(height);
       const plotW = width - pad.left - pad.right;
       const plotH = height - pad.top - pad.bottom;
       const xFor = (i) => pad.left + (rows.length <= 1 ? 0 : (i / (rows.length - 1)) * plotW);
@@ -422,7 +429,7 @@
       ctx.fillStyle = "rgba(56, 189, 248, 0.05)";
       ctx.fillRect(pad.left, yFor(70), plotW, yFor(30) - yFor(70));
 
-      drawGrid(ctx, pad, plotW, plotH, 0, 100, 4, (v) => v.toFixed(0));
+      drawGrid(ctx, pad, plotW, plotH, 0, 100, height < 140 ? 2 : 4, (v) => v.toFixed(0));
       drawDateTicks(ctx, rows, pad, plotW, height);
 
       [70, 30].forEach((lvl) => {
@@ -449,6 +456,7 @@
     (function () {
       const canvas = document.getElementById("chart-macd");
       const { ctx, width, height } = setupCanvas(canvas);
+      const pad = makeIndPad(height);
       const plotW = width - pad.left - pad.right;
       const plotH = height - pad.top - pad.bottom;
       let minM = 0;
@@ -463,7 +471,7 @@
       const xFor = (i) => pad.left + (rows.length <= 1 ? 0 : (i / (rows.length - 1)) * plotW);
       const yFor = (v) => pad.top + ((absMax - v) / (2 * absMax)) * plotH;
 
-      drawGrid(ctx, pad, plotW, plotH, -absMax, absMax, 4, (v) => v.toFixed(1));
+      drawGrid(ctx, pad, plotW, plotH, -absMax, absMax, height < 140 ? 2 : 4, (v) => v.toFixed(1));
       drawDateTicks(ctx, rows, pad, plotW, height);
 
       const zeroY = yFor(0);
@@ -493,6 +501,7 @@
     (function () {
       const canvas = document.getElementById("chart-obv");
       const { ctx, width, height } = setupCanvas(canvas);
+      const pad = makeIndPad(height);
       const plotW = width - pad.left - pad.right;
       const plotH = height - pad.top - pad.bottom;
       let minO = Infinity;
@@ -508,7 +517,7 @@
       const xFor = (i) => pad.left + (rows.length <= 1 ? 0 : (i / (rows.length - 1)) * plotW);
       const yFor = (v) => pad.top + ((maxO - v) / (maxO - minO)) * plotH;
 
-      drawGrid(ctx, pad, plotW, plotH, minO, maxO, 3, (v) => fmtCompact(v));
+      drawGrid(ctx, pad, plotW, plotH, minO, maxO, height < 140 ? 2 : 3, (v) => fmtCompact(v));
       drawDateTicks(ctx, rows, pad, plotW, height);
       drawLineSeries(ctx, rows, COL.OBV, xFor, yFor, "#A78BFA", 1.65);
 
@@ -672,7 +681,8 @@
     const canvas = document.getElementById("chart-sandbox");
     if (!canvas || document.getElementById("panel-sandbox").hidden) return;
     const { ctx, width, height } = setupCanvas(canvas);
-    const pad = { top: 16, right: 18, bottom: 26, left: 64 };
+    const compactSb = height < 160;
+    const pad = { top: compactSb ? 12 : 16, right: 18, bottom: compactSb ? 22 : 26, left: compactSb ? 58 : 64 };
     const plotW = width - pad.left - pad.right;
     const plotH = height - pad.top - pad.bottom;
 
@@ -682,7 +692,7 @@
     const xFor = (i) => pad.left + (i / 7) * plotW;
     const yFor = (v) => pad.top + ((maxY - v) / (maxY - minY)) * plotH;
 
-    drawGrid(ctx, pad, plotW, plotH, minY, maxY, 4, (v) => "$" + v.toFixed(0));
+    drawGrid(ctx, pad, plotW, plotH, minY, maxY, compactSb ? 3 : 4, (v) => "$" + v.toFixed(0));
 
     // Threshold band fill
     ctx.fillStyle = "rgba(245, 158, 11, 0.06)";
@@ -708,10 +718,11 @@
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = "#8ca0bf";
     ctx.textBaseline = "top";
-    for (let i = 0; i <= 7; i++) {
+    const sbTicks = plotW < 230 ? [0, 2, 5, 7] : [0, 1, 2, 3, 4, 5, 6, 7];
+    sbTicks.forEach((i) => {
       ctx.textAlign = i === 0 ? "left" : i === 7 ? "right" : "center";
-      ctx.fillText(i === 0 ? "Ref" : "+D" + i, xFor(i), height - pad.bottom + 8);
-    }
+      ctx.fillText(i === 0 ? "Ref" : "+D" + i, xFor(i), height - pad.bottom + (pad.bottom <= 22 ? 5 : 8));
+    });
 
     // Hypothetical line
     ctx.strokeStyle = "#38BDF8";
@@ -913,6 +924,13 @@
   }
 
   // ---------- Interactive Watch Tutorial & Responsive Analytical Workspace ----------
+  const TUTORIAL_CSS_VARS = [
+    "--tut-price-chart-h",
+    "--tut-ind-chart-h",
+    "--tut-research-chart-h",
+    "--tut-sandbox-chart-h",
+  ];
+
   const tutorial = {
     active: false,
     playing: false,
@@ -935,6 +953,16 @@
     activeTargetSelector: null,
     subFocusSelector: null,
     resolvedFocusSelector: null,
+    adaptiveLayout: {
+      density: "standard",
+      kpisMode: "full",
+      priceChartH: 356,
+      indChartH: 188,
+      researchChartH: 310,
+      sandboxChartH: 188,
+      indicatorsSimultaneous: false,
+      availH: 0,
+    },
   };
 
   function prefersReducedMotion() {
@@ -1031,6 +1059,7 @@
       tab: "overview",
       targetSelector: "#overview-kpis",
       compactTargetSelector: "#overview-kpis",
+      requiredSelectors: ["#overview-kpis"],
       title: "Synthetic Dataset Provenance & KPIs",
       narration:
         "TSLAIQ runs offline on a 100% synthetic daily series (SYNTH-EQ, 1,500 weekday sessions, fixed seed 20261123) with zero real Tesla or Yahoo Finance market data.",
@@ -1047,6 +1076,13 @@
       compactTargetSelector: "#overview-readout",
       tightCompactSelector: "#overview-chart-stage",
       checkVisibleSelector: "#overview-chart-stage",
+      requiredSelectors: [
+        "#overview-chart-card .controls-group",
+        "#overview-readout",
+        "#overview-chart-stage",
+        "#overview-chart-card .scrubber-row",
+        "#overview-scrubber-label",
+      ],
       title: "Interactive Price, Volume & Range Presets",
       narration:
         "Explore the synthetic Close price, EMA20/EMA50 overlays, and daily volume bars. Next, the tutorial widens the range from 1Y to 3Y to reveal the chronological validation split.",
@@ -1067,6 +1103,13 @@
       compactTargetSelector: "#overview-readout",
       tightCompactSelector: "#overview-chart-stage",
       checkVisibleSelector: "#overview-chart-stage",
+      requiredSelectors: [
+        "#overview-chart-card .controls-group",
+        "#overview-readout",
+        "#overview-chart-stage",
+        "#overview-chart-card .scrubber-row",
+        "#overview-scrubber-label",
+      ],
       title: "Session Scrubber & Numerical Readouts",
       narration:
         "Every session can be inspected via pointer hover or the keyboard scrubber. Watch the crosshair jump to the synthetic peak close ($338.84 on 2025-03-20) and update live OHLCV values.",
@@ -1091,6 +1134,13 @@
       targetSelector: "#indicators-chart-card",
       compactTargetSelector: "#ind-block-rsi",
       checkVisibleSelector: "#ind-block-rsi",
+      requiredSelectors: [
+        "#indicators-chart-card .segmented",
+        "#ind-readout",
+        "#ind-block-rsi",
+        "#ind-block-macd",
+        "#ind-block-obv",
+      ],
       title: "Synchronized Technical Indicator Stack",
       narration:
         "Inspect RSI(14), MACD(12,26,9) + histogram, and cumulative OBV computed deterministically on SYNTH-EQ. The walkthrough zooms into 3M and steps across the indicator stack.",
@@ -1119,6 +1169,11 @@
       compactTargetSelector: "#loss-readout",
       tightCompactSelector: "#research-chart-stage",
       checkVisibleSelector: "#research-chart-stage",
+      requiredSelectors: [
+        "#run-toggles",
+        "#loss-readout",
+        "#research-chart-stage",
+      ],
       title: "Part A — Leak-Free Synthetic Baselines",
       narration:
         "Part A plots 20-day rolling USD RMSE on the 278-day chronological split (train-only scaling): Naive Persistence ($5.83 RMSE) outperforms Lagged EMA20 ($14.65 RMSE). No neural network is trained on SYNTH-EQ.",
@@ -1143,6 +1198,7 @@
       targetSelector: "#research-comparison-grid",
       compactTargetSelector: "#research-archival-card",
       checkVisibleSelector: "#research-archival-card",
+      requiredSelectors: ["#research-archival-card"],
       title: "Part B — Honest Archival Research Record",
       narration:
         "Part B is strictly separated from SYNTH-EQ: in the original private engineering project on real historical equity data, none of the logged Keras LSTM models beat trivial naive persistence.",
@@ -1160,6 +1216,11 @@
       compactTargetSelector: "#sandbox-inputs-card",
       tightCompactSelector: ".preset-row",
       checkVisibleSelector: "#sb-signal-banner",
+      requiredSelectors: [
+        "#sandbox-inputs-card",
+        "#sb-signal-banner",
+        "#sandbox-result-card .chart-stage-sm",
+      ],
       title: "Illustrative Hypothetical Rule Sandbox",
       narration:
         "The Signal Sandbox tests deterministic ±% threshold rules on user-controlled hypothetical paths (not ML predictions or trading advice). Watch the +7% Upward preset shift BEKLE to AL.",
@@ -1189,6 +1250,7 @@
       targetSelector: "#inspector-arch-grid",
       compactTargetSelector: "#inspector-arch-card",
       checkVisibleSelector: "#inspector-arch-card",
+      requiredSelectors: ["#inspector-arch-grid"],
       title: "Engineering Inspector & Safe Architecture",
       narration:
         "Inspect the private-repo hardening summary: TrainOnlyMinMaxScaler, serializable custom Attention-LSTM layers replacing anonymous Lambda bytecode, and offline verification gates.",
@@ -1202,7 +1264,11 @@
         tutorial.subFocusSelector = "#inspector-gates-card";
         applyStageSpotlight("#inspector-gates-card");
         if (!tutorial.userScrolledAway) {
-          positionTutorialWorkspace("#inspector-gates-card", { instant: prefersReducedMotion(), force: false });
+          const dock = document.getElementById("tutorialDock");
+          const gatesEl = document.querySelector("#inspector-gates-card");
+          if (dock && gatesEl && !isElementFullyInSafeViewport(dock, gatesEl)) {
+            positionTutorialWorkspace("#inspector-gates-card", { instant: prefersReducedMotion(), force: true });
+          }
         }
       },
     },
@@ -1213,6 +1279,13 @@
       compactTargetSelector: "#overview-readout",
       tightCompactSelector: "#overview-chart-stage",
       checkVisibleSelector: "#overview-chart-stage",
+      requiredSelectors: [
+        "#overview-chart-card .controls-group",
+        "#overview-readout",
+        "#overview-chart-stage",
+        "#overview-chart-card .scrubber-row",
+        "#overview-scrubber-label",
+      ],
       title: "Walkthrough Complete — Explore Manually",
       narration:
         "You have toured TSLAIQ's synthetic charts, synchronized indicators, leak-free baselines, archival research record, hypothetical sandbox, and Inspector. Click Replay or Exit to explore freely.",
@@ -1226,15 +1299,189 @@
     },
   ];
 
+  function computeTutorialDensity(vw, vh) {
+    if (vh <= 620) return "tight";
+    if (vh <= 780) return "compact";
+    return "standard";
+  }
+
+  function setRootCssVar(name, value) {
+    const rootStyle = document.documentElement && document.documentElement.style;
+    if (rootStyle && typeof rootStyle.setProperty === "function") {
+      rootStyle.setProperty(name, value);
+    }
+  }
+
+  function clearTutorialAdaptiveLayout() {
+    if (document.body && document.body.dataset) {
+      delete document.body.dataset.tutorialStage;
+      delete document.body.dataset.tutorialDensity;
+      delete document.body.dataset.tutorialKpis;
+    }
+    const rootStyle = document.documentElement && document.documentElement.style;
+    if (rootStyle && typeof rootStyle.removeProperty === "function") {
+      TUTORIAL_CSS_VARS.forEach((v) => rootStyle.removeProperty(v));
+    }
+    tutorial.adaptiveLayout = {
+      density: "standard",
+      kpisMode: "full",
+      priceChartH: 356,
+      indChartH: 188,
+      researchChartH: 310,
+      sandboxChartH: 188,
+      indicatorsSimultaneous: false,
+      availH: 0,
+    };
+  }
+
   function getDockClearanceMetrics(dock) {
     const vh = window.innerHeight || 768;
     const vw = window.innerWidth || 1280;
-    const stickyTop = vh <= 620 ? 4 : vw <= 680 ? 6 : 8;
-    const gap = vh <= 620 ? 8 : 12;
+    const density = computeTutorialDensity(vw, vh);
+    const stickyTop = density === "tight" ? 4 : density === "compact" || vw <= 680 ? 6 : 8;
+    const gap = density === "tight" ? 6 : density === "compact" ? 8 : 10;
     const dockH = dock ? dock.getBoundingClientRect().height || 0 : 0;
     const topEdge = stickyTop + dockH + gap;
     const availH = Math.max(80, vh - topEdge - 6);
-    return { vh, vw, stickyTop, gap, dockH, topEdge, availH };
+    return { vh, vw, density, stickyTop, gap, dockH, topEdge, availH };
+  }
+
+  function updateTutorialAdaptiveLayout() {
+    if (!tutorial.active) {
+      clearTutorialAdaptiveLayout();
+      return;
+    }
+    const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+    const dock = document.getElementById("tutorialDock");
+    if (!stage || !dock) return;
+
+    const vw = window.innerWidth || 1280;
+    const vh = window.innerHeight || 768;
+    const density = computeTutorialDensity(vw, vh);
+    const isChartOverviewStage =
+      stage.id === "overview-chart" || stage.id === "overview-scrub" || stage.id === "finish";
+    const kpisMode = isChartOverviewStage
+      ? vw >= 900 && vh >= 860
+        ? "ribbon"
+        : "collapsed"
+      : "full";
+
+    if (document.body && document.body.dataset) {
+      document.body.dataset.tutorialStage = stage.id;
+      document.body.dataset.tutorialDensity = density;
+      document.body.dataset.tutorialKpis = kpisMode;
+    }
+
+    const { availH } = getDockClearanceMetrics(dock);
+    const al = tutorial.adaptiveLayout;
+    al.density = density;
+    al.kpisMode = kpisMode;
+    al.availH = Math.round(availH);
+
+    // 1. Overview Price + Volume Chart adaptive height
+    const overviewPanel = document.getElementById("panel-overview");
+    if (overviewPanel && !overviewPanel.hidden) {
+      const card = document.getElementById("overview-chart-card");
+      const chartStage = document.getElementById("overview-chart-stage");
+      const maxH = vw <= 680 ? 280 : 356;
+      const minH = vh <= 620 ? 184 : vw >= 700 ? 200 : 210;
+      let targetH = maxH;
+      if (card && chartStage) {
+        const cardH = card.getBoundingClientRect().height || 0;
+        const stageH = chartStage.getBoundingClientRect().height || 0;
+        if (cardH > 0 && stageH > 0 && cardH >= stageH) {
+          const nonCanvasH = cardH - stageH;
+          targetH = Math.max(minH, Math.min(maxH, Math.floor(availH - nonCanvasH - 6)));
+        }
+      }
+      al.priceChartH = targetH;
+      setRootCssVar("--tut-price-chart-h", `${targetH}px`);
+    }
+
+    // 2. Technical Indicators 3-chart stack adaptive height (fit together on desktop/tablet when readable)
+    const indPanel = document.getElementById("panel-indicators");
+    if (indPanel && !indPanel.hidden) {
+      const card = document.getElementById("indicators-chart-card");
+      const stages =
+        card && typeof card.querySelectorAll === "function"
+          ? Array.from(card.querySelectorAll(".chart-stage-sm"))
+          : Array.from(document.querySelectorAll("#indicators-chart-card .chart-stage-sm"));
+      let totalStagesH = 0;
+      stages.forEach((s) => {
+        totalStagesH += s.getBoundingClientRect().height || 0;
+      });
+      const cardH = card ? card.getBoundingClientRect().height || 0 : 0;
+      if (vw >= 700 && cardH > 0 && totalStagesH > 0 && cardH >= totalStagesH && stages.length === 3) {
+        const nonCanvasH = cardH - totalStagesH;
+        const perChartH = Math.floor((availH - nonCanvasH - 8) / 3);
+        if (perChartH >= 112) {
+          const clamped = Math.min(188, perChartH);
+          al.indChartH = clamped;
+          al.indicatorsSimultaneous = true;
+          setRootCssVar("--tut-ind-chart-h", `${clamped}px`);
+        } else {
+          const fallbackH = vh <= 620 ? 156 : 186;
+          al.indChartH = fallbackH;
+          al.indicatorsSimultaneous = false;
+          setRootCssVar("--tut-ind-chart-h", `${fallbackH}px`);
+        }
+      } else {
+        const fallbackH = vh <= 620 ? 156 : 186;
+        al.indChartH = fallbackH;
+        al.indicatorsSimultaneous = false;
+        setRootCssVar("--tut-ind-chart-h", `${fallbackH}px`);
+      }
+    }
+
+    // 3. Part A Synthetic Benchmarks Chart adaptive height
+    const resPanel = document.getElementById("panel-research");
+    if (resPanel && !resPanel.hidden) {
+      const card = document.getElementById("research-chart-card");
+      const chartStage = document.getElementById("research-chart-stage");
+      const maxH = vw <= 680 ? 250 : 310;
+      const minH = vh <= 620 ? 170 : 184;
+      let targetH = maxH;
+      if (card && chartStage) {
+        const cardH = card.getBoundingClientRect().height || 0;
+        const stageH = chartStage.getBoundingClientRect().height || 0;
+        if (cardH > 0 && stageH > 0 && cardH >= stageH) {
+          const nonCanvasH = cardH - stageH;
+          targetH = Math.max(minH, Math.min(maxH, Math.floor(availH - nonCanvasH - 6)));
+        }
+      }
+      al.researchChartH = targetH;
+      setRootCssVar("--tut-research-chart-h", `${targetH}px`);
+    }
+
+    // 4. Signal Sandbox Chart adaptive height
+    const sbPanel = document.getElementById("panel-sandbox");
+    if (sbPanel && !sbPanel.hidden) {
+      const card = document.getElementById("sandbox-result-card");
+      const chartStage = card ? card.querySelector(".chart-stage-sm") : null;
+      const maxH = 188;
+      const minH = 126;
+      let targetH = maxH;
+      if (card && chartStage) {
+        const cardH = card.getBoundingClientRect().height || 0;
+        const stageH = chartStage.getBoundingClientRect().height || 0;
+        if (cardH > 0 && stageH > 0 && cardH >= stageH) {
+          const nonCanvasH = cardH - stageH;
+          targetH = Math.max(minH, Math.min(maxH, Math.floor(availH - nonCanvasH - 6)));
+        }
+      }
+      al.sandboxChartH = targetH;
+      setRootCssVar("--tut-sandbox-chart-h", `${targetH}px`);
+    }
+  }
+
+  function isElementFullyInSafeViewport(dock, el) {
+    if (!el || !dock) return false;
+    const vh = window.innerHeight || 768;
+    const dr = dock.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    if (er.height <= 0 || er.width <= 0) return false;
+    if (dr.top < -1 || dr.bottom > vh + 1) return false;
+    return er.top >= dr.bottom + 1 && er.bottom <= vh - 1;
   }
 
   function isElementMeaningfullyVisible(dock, el) {
@@ -1242,26 +1489,73 @@
     const vh = window.innerHeight || 768;
     const dr = dock.getBoundingClientRect();
     const er = el.getBoundingClientRect();
+    if (er.height <= 0 || er.width <= 0) return false;
+    const safeH = Math.max(40, vh - dr.bottom - 4);
+    if (er.height <= safeH) {
+      return er.top >= dr.bottom + 1 && er.bottom <= vh - 1;
+    }
     const visibleTop = Math.max(er.top, dr.bottom + 2);
     const visibleBottom = Math.min(er.bottom, vh - 2);
     const visibleH = Math.max(0, visibleBottom - visibleTop);
-    if (er.height <= vh - dr.bottom - 12) {
-      return er.top >= dr.bottom + 2 && er.bottom <= vh - 2;
+    return er.top >= dr.bottom + 1 && er.top <= dr.bottom + 24 && visibleH >= Math.min(er.height * 0.7, safeH * 0.75);
+  }
+
+  function getStageRequiredVisibility(dock, stage) {
+    if (!dock || !stage) {
+      return { selectors: [], allFullyVisible: true, combinedHeight: 0, minTop: 0, maxBottom: 0 };
     }
-    return visibleH >= Math.min(er.height * 0.7, (vh - dr.bottom) * 0.6);
+    const sels =
+      stage.id === "inspector" && tutorial.subFocusSelector === "#inspector-gates-card"
+        ? ["#inspector-gates-card"]
+        : stage.requiredSelectors || (stage.targetSelector ? [stage.targetSelector] : []);
+
+    let minTop = Infinity;
+    let maxBottom = -Infinity;
+    let foundAny = false;
+    let allFullyVisible = true;
+    const details = [];
+
+    sels.forEach((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (r.height <= 0 || r.width <= 0) return;
+      foundAny = true;
+      if (r.top < minTop) minTop = r.top;
+      if (r.bottom > maxBottom) maxBottom = r.bottom;
+      const full = isElementFullyInSafeViewport(dock, el);
+      if (!full) allFullyVisible = false;
+      details.push({ selector: sel, top: Math.round(r.top), bottom: Math.round(r.bottom), full });
+    });
+
+    return {
+      selectors: details,
+      allFullyVisible: foundAny ? allFullyVisible : true,
+      combinedHeight: foundAny ? Math.max(0, maxBottom - minTop) : 0,
+      minTop: foundAny ? minTop : 0,
+      maxBottom: foundAny ? maxBottom : 0,
+    };
   }
 
   function focusSubTargetIfNeeded(focusSelector, spotlightSelector) {
-    tutorial.subFocusSelector = focusSelector;
-    tutorial.resolvedFocusSelector = focusSelector;
     if (spotlightSelector) {
       applyStageSpotlight(spotlightSelector);
     }
-    if (tutorial.userScrolledAway) return;
     const dock = document.getElementById("tutorialDock");
     const targetEl = document.querySelector(focusSelector);
     if (!dock || !targetEl) return;
-    if (!isElementMeaningfullyVisible(dock, targetEl)) {
+
+    // When the entire parent stage workspace (e.g. desktop simultaneous 3-indicator stack or side-by-side Sandbox) already fits 100% in the safe viewport, keep unified framing without shifting focus.
+    const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+    const primaryEl = stage && stage.targetSelector ? document.querySelector(stage.targetSelector) : null;
+    if (primaryEl && isElementFullyInSafeViewport(dock, primaryEl) && isElementFullyInSafeViewport(dock, targetEl)) {
+      return;
+    }
+
+    tutorial.subFocusSelector = focusSelector;
+    tutorial.resolvedFocusSelector = focusSelector;
+    if (tutorial.userScrolledAway) return;
+    if (!isElementFullyInSafeViewport(dock, targetEl)) {
       positionTutorialWorkspace(focusSelector, { instant: prefersReducedMotion(), force: true });
     }
   }
@@ -1284,23 +1578,24 @@
 
     const { availH } = getDockClearanceMetrics(dock);
     const pRect = primaryEl.getBoundingClientRect();
-    const checkEl = stage.checkVisibleSelector ? document.querySelector(stage.checkVisibleSelector) : compactEl;
-    const cRect = (checkEl || compactEl).getBoundingClientRect();
 
-    // If the entire primary card fits, or its key demonstrated content fits cleanly beneath the dock when aligned to primary top, keep the full primary card framed.
-    const keyBottomFromPrimaryTop = cRect.bottom - pRect.top;
-    if (pRect.height <= availH || keyBottomFromPrimaryTop <= availH) {
+    // Verify whether the entire primary card OR all stage-required elements fit from primary top within availH.
+    const reqVis = getStageRequiredVisibility(dock, stage);
+    const requiredSpanFromPrimaryTop =
+      reqVis.selectors.length > 0 ? Math.max(0, reqVis.maxBottom - pRect.top) : pRect.height;
+
+    if (pRect.height <= availH + 2 || requiredSpanFromPrimaryTop <= availH + 2) {
       return primarySel;
     }
 
-    // If an even tighter compact selector is defined (e.g. .preset-row inside #sandbox-inputs-card, or #overview-chart-stage on 320x480), use it only when compactEl pushes that key child below a usable visibility threshold.
+    // Fallback for genuinely small viewports (e.g. 320x480 or stacked mobile) where simultaneous fitting is physically impossible.
     if (stage.tightCompactSelector) {
       const tightEl = document.querySelector(stage.tightCompactSelector);
       if (tightEl) {
         const compRect = compactEl.getBoundingClientRect();
         const tightRect = tightEl.getBoundingClientRect();
         const visibleTight = availH - (tightRect.top - compRect.top);
-        const minNeeded = Math.min(tightRect.height, Math.max(80, tightRect.height * 0.6));
+        const minNeeded = Math.min(tightRect.height, Math.max(80, tightRect.height * 0.7));
         if (visibleTight < minNeeded) {
           return stage.tightCompactSelector;
         }
@@ -1340,12 +1635,23 @@
     const dockVisible = dockRect.top >= -1 && dockRect.bottom <= vh + 1;
     if (!dockVisible) return false;
     if (!target) return true;
+
     const targetRect = target.getBoundingClientRect();
-    const availH = vh - dockRect.bottom - 10;
-    if (targetRect.height <= availH) {
-      return targetRect.top >= dockRect.bottom + 2 && targetRect.bottom <= vh - 2;
+    const safeH = Math.max(40, vh - dockRect.bottom - 6);
+    const stage = TUTORIAL_STAGES[tutorial.stageIndex];
+    const reqVis = stage ? getStageRequiredVisibility(dock, stage) : null;
+
+    // Require target top to sit cleanly near the dock clearance edge (prevents small fallback targets halfway down the viewport from falsely blocking scroll while charts below clip).
+    const topAlignedNearDock = targetRect.top >= dockRect.bottom + 1 && targetRect.top <= dockRect.bottom + 24;
+
+    if (reqVis && reqVis.selectors.length > 0 && reqVis.combinedHeight <= safeH + 2) {
+      return reqVis.allFullyVisible && topAlignedNearDock;
     }
-    return targetRect.top >= dockRect.bottom + 2 && targetRect.top <= dockRect.bottom + 20;
+
+    if (targetRect.height <= safeH) {
+      return topAlignedNearDock && targetRect.bottom <= vh - 1;
+    }
+    return topAlignedNearDock;
   }
 
   function positionTutorialWorkspace(explicitSelector, options) {
@@ -1525,8 +1831,11 @@
 
     applyStageSpotlight(tutorial.activeTargetSelector);
     renderTutorialDockUI();
+    updateTutorialAdaptiveLayout();
 
     requestAnimationFrame(() => {
+      if (!tutorial.active) return;
+      updateTutorialAdaptiveLayout();
       renderActiveTabCharts();
       positionTutorialWorkspace(null, {
         instant: Boolean(opts.instant),
@@ -1600,6 +1909,7 @@
     tutorial.resolvedFocusSelector = null;
     tutorial.stageToken += 1;
     clearSpotlight();
+    clearTutorialAdaptiveLayout();
     renderTutorialDockUI();
     requestAnimationFrame(renderActiveTabCharts);
     if (opts.restoreFocus !== false) {
@@ -1626,6 +1936,7 @@
 
     const reposition = () => {
       if (!tutorial.active) return;
+      updateTutorialAdaptiveLayout();
       renderActiveTabCharts();
       if (!tutorial.userScrolledAway) {
         positionTutorialWorkspace(null, { instant: true, force: true });
@@ -1780,6 +2091,7 @@
     getState() {
       const stage = TUTORIAL_STAGES[tutorial.stageIndex];
       const sbCode = document.getElementById("sb-signal-code");
+      const dock = document.getElementById("tutorialDock");
       return {
         active: tutorial.active,
         playing: tutorial.playing,
@@ -1801,12 +2113,16 @@
         benchHoverIdx: state.benchHoverIdx,
         sandboxDrift: state.sandboxDrift,
         sandboxSignal: sbCode ? sbCode.textContent.trim() : null,
+        adaptiveLayout: Object.assign({}, tutorial.adaptiveLayout),
+        requiredVisibility:
+          tutorial.active && dock && stage ? getStageRequiredVisibility(dock, stage) : null,
       };
     },
     stages: TUTORIAL_STAGES.map((s) => ({
       id: s.id,
       tab: s.tab,
       targetSelector: s.targetSelector,
+      requiredSelectors: (s.requiredSelectors || []).slice(),
       title: s.title,
       hasSubAction: typeof s.subAction === "function",
     })),
