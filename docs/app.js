@@ -163,14 +163,14 @@
     document.getElementById("kpi-close-sub").textContent =
       `${latest.date} (${chgSign}${latest.daily_change_pct.toFixed(2)}% vs prior day)`;
     document.getElementById("kpi-ath").textContent = fmtUsd(ext.all_time_high_close);
-    document.getElementById("kpi-ath-sub").textContent = `${ext.all_time_high_close_date} (SYNTH-EQ synthetic)`;
+    document.getElementById("kpi-ath-sub").textContent = `${ext.all_time_high_close_date} (SYNTH-EQ high)`;
     document.getElementById("kpi-days").textContent = m.trading_days.toLocaleString("en-US");
     document.getElementById("kpi-span-sub").textContent = `${m.start_date} → ${m.end_date}`;
     document.getElementById("kpi-baseline-rmse").textContent = fmtUsd(lf.usd_rmse);
     document.getElementById("kpi-baseline-sub").textContent =
-      `SYNTH-EQ leak-free val (${lf.val_sequences} days)`;
+      `Held-out ${lf.val_sequences}d split (SYNTH-EQ)`;
     document.getElementById("kpi-rsi").textContent = fmtNum(latest.rsi, 2);
-    document.getElementById("kpi-rsi-sub").textContent = `SYNTH-EQ ${latest.date} (14d Wilder)`;
+    document.getElementById("kpi-rsi-sub").textContent = `${latest.date} (14d Wilder)`;
 
     // Indicator summary table
     document.getElementById("ind-tbl-rsi").textContent = fmtNum(latest.rsi, 4);
@@ -1060,9 +1060,9 @@
       targetSelector: "#overview-kpis",
       compactTargetSelector: "#overview-kpis",
       requiredSelectors: ["#overview-kpis"],
-      title: "Synthetic Dataset Provenance & KPIs",
+      title: "Overview & Key Metrics",
       narration:
-        "TSLAIQ runs offline on a 100% synthetic daily series (SYNTH-EQ, 1,500 weekday sessions, fixed seed 20261123) with zero real Tesla or Yahoo Finance market data.",
+        "TSLAIQ analyzes daily equity price action, technical indicators, and forecasting baselines. This preview runs offline on the synthetic SYNTH-EQ series (1,500 sessions) with no real market data.",
       durationMs: 3600,
       enter() {
         activateTab("overview");
@@ -1083,9 +1083,9 @@
         "#overview-chart-card .scrubber-row",
         "#overview-scrubber-label",
       ],
-      title: "Interactive Price, Volume & Range Presets",
+      title: "Price, Volume & Range Controls",
       narration:
-        "Explore the synthetic Close price, EMA20/EMA50 overlays, and daily volume bars. Next, the tutorial widens the range from 1Y to 3Y to reveal the chronological validation split.",
+        "Explore daily closing price, EMA20/EMA50 moving averages, and trading volume. Next, the view widens from 1Y to 3Y to reveal the chronological 80/20 validation split.",
       durationMs: 4200,
       subDelayMs: 1500,
       enter() {
@@ -1110,9 +1110,9 @@
         "#overview-chart-card .scrubber-row",
         "#overview-scrubber-label",
       ],
-      title: "Session Scrubber & Numerical Readouts",
+      title: "Session Scrubber & OHLCV Readouts",
       narration:
-        "Every session can be inspected via pointer hover or the keyboard scrubber. Watch the crosshair jump to the synthetic peak close ($338.84 on 2025-03-20) and update live OHLCV values.",
+        "Inspect any session via pointer hover or the keyboard scrubber. Watch the crosshair jump to the series peak close ($338.84 on 2025-03-20) and update live OHLCV values.",
       durationMs: 4200,
       subDelayMs: 1400,
       enter() {
@@ -1141,9 +1141,9 @@
         "#ind-block-macd",
         "#ind-block-obv",
       ],
-      title: "Synchronized Technical Indicator Stack",
+      title: "Synchronized Technical Indicators",
       narration:
-        "Inspect RSI(14), MACD(12,26,9) + histogram, and cumulative OBV computed deterministically on SYNTH-EQ. The walkthrough zooms into 3M and steps across the indicator stack.",
+        "Track RSI(14), MACD(12,26,9) with histogram, and cumulative OBV across aligned axes. Next, the chart zooms into 3M and steps through each indicator.",
       durationMs: 4800,
       subDelayMs: 1400,
       enter() {
@@ -1174,9 +1174,9 @@
         "#loss-readout",
         "#research-chart-stage",
       ],
-      title: "Part A — Leak-Free Synthetic Baselines",
+      title: "Leak-Free Validation Baselines",
       narration:
-        "Part A plots 20-day rolling USD RMSE on the 278-day chronological split (train-only scaling): Naive Persistence ($5.83 RMSE) outperforms Lagged EMA20 ($14.65 RMSE). No neural network is trained on SYNTH-EQ.",
+        "Rolling 20-day USD RMSE on the 278-day held-out validation split (train-only scaling): Naive Persistence ($5.83 RMSE) outperforms Lagged EMA20 ($14.65 RMSE). No neural network is trained on SYNTH-EQ.",
       durationMs: 4400,
       subDelayMs: 1500,
       enter() {
@@ -1199,9 +1199,9 @@
       compactTargetSelector: "#research-archival-card",
       checkVisibleSelector: "#research-archival-card",
       requiredSelectors: ["#research-archival-card"],
-      title: "Part B — Honest Archival Research Record",
+      title: "Historical LSTM Research Findings",
       narration:
-        "Part B is strictly separated from SYNTH-EQ: in the original private engineering project on real historical equity data, none of the logged Keras LSTM models beat trivial naive persistence.",
+        "Separately, in the original private TSLAIQ research on historical equity data, none of the logged Keras LSTM models outperformed the naive persistence baseline.",
       durationMs: 4200,
       enter() {
         activateTab("research");
@@ -1221,9 +1221,9 @@
         "#sb-signal-banner",
         "#sandbox-result-card .chart-stage-sm",
       ],
-      title: "Illustrative Hypothetical Rule Sandbox",
+      title: "Illustrative Threshold Rule Sandbox",
       narration:
-        "The Signal Sandbox tests deterministic ±% threshold rules on user-controlled hypothetical paths (not ML predictions or trading advice). Watch the +7% Upward preset shift BEKLE to AL.",
+        "Test how ±% decision thresholds react to hypothetical 7-day paths (illustrative rules only, not ML forecasts or trading advice). Watch the +7% preset shift BEKLE to AL.",
       durationMs: 5200,
       subDelayMs: 1400,
       enter() {
@@ -1251,9 +1251,9 @@
       compactTargetSelector: "#inspector-arch-card",
       checkVisibleSelector: "#inspector-arch-card",
       requiredSelectors: ["#inspector-arch-grid"],
-      title: "Engineering Inspector & Safe Architecture",
+      title: "Model Pipeline & Engineering Architecture",
       narration:
-        "Inspect the private-repo hardening summary: TrainOnlyMinMaxScaler, serializable custom Attention-LSTM layers replacing anonymous Lambda bytecode, and offline verification gates.",
+        "Review the Python/Keras architecture: TrainOnlyMinMaxScaler, serializable custom Attention-LSTM layers replacing anonymous Lambda layers, and static model-archive validation.",
       durationMs: 4600,
       subDelayMs: 1600,
       enter() {
@@ -1286,9 +1286,9 @@
         "#overview-chart-card .scrubber-row",
         "#overview-scrubber-label",
       ],
-      title: "Walkthrough Complete — Explore Manually",
+      title: "Walkthrough Complete",
       narration:
-        "You have toured TSLAIQ's synthetic charts, synchronized indicators, leak-free baselines, archival research record, hypothetical sandbox, and Inspector. Click Replay or Exit to explore freely.",
+        "You have explored TSLAIQ's price charts, technical indicators, validation baselines, research findings, rule sandbox, and architecture. Click Replay or Exit to explore freely.",
       durationMs: 0,
       enter() {
         resetSandboxToDefault();

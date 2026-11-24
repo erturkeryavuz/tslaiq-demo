@@ -1,45 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" fill="none">
   <defs>
-    <!-- Foundation Obsidian & Quantitative Studio Lighting -->
+    <!-- Foundation Obsidian & Quantitative Studio Lighting (Portfolio V3) -->
     <linearGradient id="bgBase" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#0A0C10" />
-      <stop offset="52%" stop-color="#11141A" />
+      <stop offset="52%" stop-color="#101113" />
       <stop offset="100%" stop-color="#090B0E" />
     </linearGradient>
 
-    <radialGradient id="quantHalo" cx="1100" cy="400" r="580" gradientUnits="userSpaceOnUse">
+    <radialGradient id="quantHalo" cx="1110" cy="410" r="590" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#56B4E9" stop-opacity="0.16" />
-      <stop offset="42%" stop-color="#B49A78" stop-opacity="0.08" />
-      <stop offset="75%" stop-color="#34D399" stop-opacity="0.05" />
+      <stop offset="44%" stop-color="#B49A78" stop-opacity="0.08" />
+      <stop offset="78%" stop-color="#34D399" stop-opacity="0.045" />
       <stop offset="100%" stop-color="#0A0C10" stop-opacity="0" />
     </radialGradient>
 
-    <radialGradient id="leftStudioGlow" cx="250" cy="340" r="490" gradientUnits="userSpaceOnUse">
+    <radialGradient id="leftStudioGlow" cx="250" cy="360" r="480" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#B49A78" stop-opacity="0.09" />
       <stop offset="58%" stop-color="#758D92" stop-opacity="0.04" />
       <stop offset="100%" stop-color="#0A0C10" stop-opacity="0" />
     </radialGradient>
 
     <linearGradient id="cardSurface" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#181C23" />
-      <stop offset="100%" stop-color="#11141A" />
+      <stop offset="0%" stop-color="#1C1E22" />
+      <stop offset="100%" stop-color="#121419" />
     </linearGradient>
 
     <linearGradient id="cardBorder" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#EBD0A4" stop-opacity="0.45" />
-      <stop offset="48%" stop-color="#56B4E9" stop-opacity="0.34" />
+      <stop offset="48%" stop-color="#56B4E9" stop-opacity="0.32" />
       <stop offset="100%" stop-color="#F1EDE5" stop-opacity="0.10" />
     </linearGradient>
 
-    <linearGradient id="priceArea" x1="0" y1="220" x2="0" y2="412" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#E86378" stop-opacity="0.28" />
-      <stop offset="68%" stop-color="#56B4E9" stop-opacity="0.08" />
+    <linearGradient id="priceArea" x1="0" y1="150" x2="0" y2="336" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#56B4E9" stop-opacity="0.22" />
+      <stop offset="68%" stop-color="#B49A78" stop-opacity="0.07" />
       <stop offset="100%" stop-color="#0B0D11" stop-opacity="0" />
-    </linearGradient>
-
-    <linearGradient id="traceBg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#171B22" stop-opacity="0.98" />
-      <stop offset="100%" stop-color="#0F1218" stop-opacity="0.98" />
     </linearGradient>
 
     <filter id="shadowHeavy" x="-16%" y="-16%" width="132%" height="138%">
@@ -62,243 +57,228 @@
 
     <g stroke="#F1EDE5" stroke-opacity="0.045" stroke-width="1.2">
       <rect x="34" y="34" width="1532" height="832" rx="18" />
-      <line x1="628" y1="34" x2="628" y2="866" stroke-dasharray="4 8" />
+      <line x1="620" y1="34" x2="620" y2="866" stroke-dasharray="4 8" />
     </g>
 
-    <!-- Restrained Quantitative Grid Lines -->
-    <g stroke="#758D92" stroke-opacity="0.08" stroke-width="1">
-      <line x1="628" y1="260" x2="1566" y2="260" />
-      <line x1="628" y1="450" x2="1566" y2="450" />
-      <line x1="628" y1="640" x2="1566" y2="640" />
-      <circle cx="0" cy="900" r="300" stroke="#B49A78" stroke-opacity="0.08" />
-      <circle cx="1600" cy="0" r="260" stroke="#56B4E9" stroke-opacity="0.09" />
+    <g stroke="#758D92" stroke-opacity="0.075" stroke-width="1">
+      <line x1="620" y1="260" x2="1566" y2="260" />
+      <line x1="620" y1="470" x2="1566" y2="470" />
+      <line x1="620" y1="680" x2="1566" y2="680" />
+      <circle cx="0" cy="900" r="300" stroke="#B49A78" stroke-opacity="0.07" />
+      <circle cx="1600" cy="0" r="260" stroke="#56B4E9" stroke-opacity="0.08" />
     </g>
 
     <!-- Corner Registration Ticks -->
-    <g stroke="#B49A78" stroke-opacity="0.35" stroke-width="1.5">
+    <g stroke="#B49A78" stroke-opacity="0.34" stroke-width="1.5">
       <path d="M54 70 L54 54 L70 54" />
       <path d="M1546 70 L1546 54 L1530 54" />
       <path d="M54 830 L54 846 L70 846" />
       <path d="M1546 830 L1546 846 L1530 846" />
     </g>
 
-    <!-- 2. LEFT EDITORIAL TYPOGRAPHY COLUMN -->
+    <!-- 2. LEFT PROJECT-FIRST EDITORIAL COLUMN -->
     <g id="editorial-column">
-      <!-- Original Geometric Quantitative Line Emblem + Kicker -->
-      <rect x="86" y="192" width="40" height="40" rx="10" fill="#171B22" stroke="#B49A78" stroke-opacity="0.58" stroke-width="1.4" />
-      <path d="M94 220 L101 213 L107 216 L114 205 L120 209" stroke="#56B4E9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
-      <circle cx="114" cy="205" r="2.8" fill="#EBD0A4" />
-      <line x1="140" y1="212" x2="164" y2="212" stroke="#B49A78" stroke-width="1.5" />
-      <text x="176" y="217" fill="#B49A78" font-family="'SF Mono', 'Menlo', 'Monaco', monospace" font-size="12.5" font-weight="600" letter-spacing="2.2">QUANTITATIVE ML &amp; TIME-SERIES</text>
+      <rect x="86" y="198" width="40" height="40" rx="10" fill="#171B22" stroke="#B49A78" stroke-opacity="0.58" stroke-width="1.4" />
+      <path d="M94 226 L101 219 L107 222 L114 211 L120 215" stroke="#56B4E9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="114" cy="211" r="2.8" fill="#EBD0A4" />
+      <line x1="140" y1="218" x2="164" y2="218" stroke="#B49A78" stroke-width="1.5" />
+      <text x="176" y="223" fill="#B49A78" font-family="'SF Mono', 'Menlo', 'Monaco', monospace" font-size="12.5" font-weight="600" letter-spacing="2.2">QUANTITATIVE TIME-SERIES &amp; ML</text>
 
-      <!-- Main Hero Title -->
-      <text x="84" y="346" fill="#F1EDE5" font-family="'SF Pro Display', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="98" font-weight="700" letter-spacing="-3">TSLA</text>
-      <text x="334" y="346" fill="#C9B08C" font-family="'Iowan Old Style', 'Georgia', 'Times New Roman', serif" font-style="italic" font-size="102" font-weight="400" letter-spacing="-1">IQ</text>
+      <text x="84" y="356" fill="#F1EDE5" font-family="'SF Pro Display', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="102" font-weight="700" letter-spacing="-3.2">TSLA</text>
+      <text x="342" y="356" fill="#C9B08C" font-family="'Iowan Old Style', 'Georgia', 'Times New Roman', serif" font-style="italic" font-size="106" font-weight="400" letter-spacing="-1">IQ</text>
 
-      <text x="86" y="408" fill="#8C99A6" font-family="'SF Mono', 'Menlo', monospace" font-size="18" font-weight="600" letter-spacing="1.8">SYNTH-EQ · SYNTHETIC RESEARCH</text>
+      <rect x="86" y="394" width="68" height="3" rx="1.5" fill="#56B4E9" />
+      <rect x="162" y="395" width="144" height="1" fill="#B49A78" fill-opacity="0.38" />
 
-      <!-- Accent Divider -->
-      <rect x="86" y="440" width="68" height="3" rx="1.5" fill="#56B4E9" />
-      <rect x="162" y="441" width="144" height="1" fill="#B49A78" fill-opacity="0.38" />
+      <text x="86" y="458" fill="#F1EDE5" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="-0.25">Equity Time-Series Analytics</text>
+      <text x="86" y="492" fill="#B5AFA4" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="23" font-weight="400" letter-spacing="-0.15">&amp; Forecasting Research</text>
 
-      <!-- Grounded Supporting Lines -->
-      <text x="86" y="498" fill="#E6E1D7" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="-0.2">Synthetic OHLCV &amp; Indicator Stack</text>
-      <text x="86" y="532" fill="#A9A398" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" letter-spacing="-0.1">Leak-Free Baselines &amp; Methodology</text>
-
-      <!-- Concise Grounded Scope Summary -->
-      <text x="86" y="592" fill="#8C939C" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15.2" font-weight="400">
-        <tspan x="86" dy="0">1,500 deterministic SYNTH-EQ sessions (seed 20261123),</tspan>
-        <tspan x="86" dy="25">6 technical indicators, 80/20 split baselines, and inspector.</tspan>
+      <text x="86" y="556" fill="#8C939C" font-family="'SF Pro Text', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15.5" font-weight="400">
+        <tspan x="86" dy="0">Technical indicators, leak-free validation baselines,</tspan>
+        <tspan x="86" dy="26">and Attention-LSTM modeling in Python and Keras.</tspan>
       </text>
 
-      <!-- Architecture Metadata Strip -->
-      <g transform="translate(86, 676)">
-        <rect x="0" y="0" width="146" height="36" rx="18" fill="#24151A" stroke="#E86378" stroke-opacity="0.48" />
-        <text x="73" y="22.5" text-anchor="middle" fill="#F59AA8" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="600">100% Synthetic</text>
+      <g transform="translate(86, 650)">
+        <rect x="0" y="0" width="218" height="38" rx="19" fill="#171B22" stroke="#F1EDE5" stroke-opacity="0.16" />
+        <text x="109" y="23.5" text-anchor="middle" fill="#E4DFD5" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="500">Python · Keras · Canvas</text>
 
-        <rect x="158" y="0" width="144" height="36" rx="18" fill="#171B22" stroke="#F1EDE5" stroke-opacity="0.16" />
-        <text x="230" y="22.5" text-anchor="middle" fill="#E4DFD5" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="500">Python · Canvas</text>
-
-        <rect x="314" y="0" width="146" height="36" rx="18" fill="#12212E" stroke="#56B4E9" stroke-opacity="0.52" />
-        <text x="387" y="22.5" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="600">Watch Tutorial</text>
+        <rect x="232" y="0" width="168" height="38" rx="19" fill="#12212E" stroke="#56B4E9" stroke-opacity="0.48" />
+        <text x="316" y="23.5" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', 'Menlo', monospace" font-size="12" font-weight="600">Interactive Preview</text>
       </g>
 
-      <!-- Honest Disclaimer / Attribution Footer -->
-      <text x="86" y="766" fill="#6F7680" font-family="'SF Mono', 'Menlo', monospace" font-size="11.5" letter-spacing="1.1">ERTÜRK ERYAVUZ  ·  ZERO REAL MARKET DATA</text>
-      <text x="86" y="790" fill="#5D646E" font-family="'SF Mono', 'Menlo', monospace" font-size="11" letter-spacing="0.9">NOT AFFILIATED WITH TESLA  ·  NOT FINANCIAL ADVICE</text>
+      <text x="86" y="766" fill="#6F7680" font-family="'SF Mono', 'Menlo', monospace" font-size="11.5" letter-spacing="1.1">ERTÜRK ERYAVUZ  ·  SYNTHETIC PREVIEW DATA (SYNTH-EQ)</text>
     </g>
 
-    <!-- 3. RIGHT DESKTOP QUANTITATIVE WORKSPACE SHOWCASE (No Phone Frame) -->
+    <!-- 3. RIGHT DATA-DERIVED ANALYTICAL INTERFACE SHOWCASE -->
 
-    <!-- 3A. PRIMARY DASHBOARD CHART CARD: SYNTH-EQ Price, Overlays, Val Split & Volume -->
-    <g id="hero-price-chart" filter="url(#shadowHeavy)" transform="translate(662, 102)">
-      <rect x="0" y="0" width="874" height="390" rx="20" fill="url(#cardSurface)" stroke="url(#cardBorder)" stroke-width="1.6" />
+    <!-- 3A. PRIMARY PRICE & VOLUME CHART CARD (Data-Derived from data/synthetic_ohlcv.csv, ALL 1,500 rows) -->
+    <g id="hero-price-chart" filter="url(#shadowHeavy)" transform="translate(658, 108)">
+      <rect x="0" y="0" width="878" height="444" rx="20" fill="url(#cardSurface)" stroke="url(#cardBorder)" stroke-width="1.6" />
 
-      <!-- Card Header -->
-      <text x="24" y="34" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600" letter-spacing="1.5">OVERVIEW WORKSPACE · DETERMINISTIC SEED 20261123</text>
-      <text x="24" y="62" fill="#F1EDE5" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="21" font-weight="700">Synthetic Daily Close &amp; Volume (SYNTH-EQ)</text>
+      <text x="26" y="36" fill="#B49A78" font-family="'SF Mono', monospace" font-size="11" font-weight="600" letter-spacing="1.6">OVERVIEW · SYNTH-EQ (1,500 SESSIONS)</text>
+      <text x="26" y="66" fill="#F1EDE5" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="22" font-weight="700">Daily Price &amp; Volume</text>
 
-      <!-- Top-Right Chips -->
-      <rect x="572" y="22" width="128" height="26" rx="13" fill="#24151A" stroke="#E86378" stroke-opacity="0.52" />
-      <text x="636" y="39" text-anchor="middle" fill="#F59AA8" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">100% SYNTHETIC</text>
+      <rect x="708" y="24" width="144" height="28" rx="14" fill="#12161E" stroke="#F1EDE5" stroke-opacity="0.14" />
+      <text x="733" y="42" fill="#7D8694" font-family="'SF Mono', monospace" font-size="10.5">1Y</text>
+      <text x="772" y="42" fill="#7D8694" font-family="'SF Mono', monospace" font-size="10.5">3Y</text>
+      <rect x="802" y="27" width="44" height="22" rx="9" fill="#2C261D" stroke="#B49A78" stroke-opacity="0.6" />
+      <text x="824" y="42" text-anchor="middle" fill="#F1EDE5" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">ALL</text>
 
-      <rect x="710" y="22" width="140" height="26" rx="13" fill="#141923" stroke="#F1EDE5" stroke-opacity="0.14" />
-      <text x="734" y="39" fill="#7D8694" font-family="'SF Mono', monospace" font-size="10.5">1Y</text>
-      <text x="772" y="39" fill="#7D8694" font-family="'SF Mono', monospace" font-size="10.5">3Y</text>
-      <rect x="802" y="25" width="42" height="20" rx="8" fill="#2C261D" stroke="#B49A78" stroke-opacity="0.6" />
-      <text x="823" y="39" text-anchor="middle" fill="#F1EDE5" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">ALL</text>
+      <rect x="26" y="84" width="826" height="36" rx="9" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.08" />
+      <text x="42" y="106" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Close: <tspan fill="#F1EDE5" font-weight="700">$244.49</tspan></text>
+      <text x="208" y="106" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Peak: <tspan fill="#EBD0A4" font-weight="700">$338.84</tspan></text>
+      <text x="366" y="106" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">EMA20: <tspan fill="#56B4E9" font-weight="700">$257.46</tspan></text>
+      <text x="530" y="106" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">EMA50: <tspan fill="#A78BFA" font-weight="700">$256.57</tspan></text>
+      <text x="698" y="106" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">RSI(14): <tspan fill="#34D399" font-weight="700">38.26</tspan></text>
 
-      <!-- Readout Strip (Exact Grounded SYNTH-EQ Metrics) -->
-      <rect x="24" y="78" width="826" height="34" rx="9" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.08" />
-      <text x="40" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Final Close: <tspan fill="#F1EDE5" font-weight="700">$244.49</tspan></text>
-      <text x="218" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Peak: <tspan fill="#EBD0A4" font-weight="700">$338.84</tspan></text>
-      <text x="364" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">EMA20: <tspan fill="#56B4E9" font-weight="700">$257.46</tspan></text>
-      <text x="518" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">EMA50: <tspan fill="#A78BFA" font-weight="700">$256.57</tspan></text>
-      <text x="676" y="99" fill="#9E9B93" font-family="'SF Mono', monospace" font-size="11.5">Sessions: <tspan fill="#34D399" font-weight="700">1,500</tspan></text>
+      <rect x="26" y="132" width="826" height="286" rx="12" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.08" />
 
-      <!-- Deep Chart Stage -->
-      <rect x="24" y="124" width="826" height="244" rx="12" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.08" />
-
-      <!-- Y Grid + Price Labels -->
+      <!-- Exact Data-Aligned Price Grid ($100..$340 on [$90, $355] domain) -->
       <g stroke="#242C3A" stroke-width="1">
-        <line x1="82" y1="154" x2="834" y2="154" />
-        <line x1="82" y1="198" x2="834" y2="198" />
-        <line x1="82" y1="242" x2="834" y2="242" />
-        <line x1="82" y1="286" x2="834" y2="286" />
+        <line x1="84" y1="158.6" x2="834" y2="158.6" />
+        <line x1="84" y1="215.4" x2="834" y2="215.4" />
+        <line x1="84" y1="272.2" x2="834" y2="272.2" />
+        <line x1="84" y1="328.9" x2="834" y2="328.9" />
       </g>
       <g fill="#758D92" font-family="'SF Mono', monospace" font-size="10.5" text-anchor="end">
-        <text x="74" y="158">$349</text>
-        <text x="74" y="202">$295</text>
-        <text x="74" y="246">$240</text>
-        <text x="74" y="290">$185</text>
+        <text x="76" y="162.1">$340</text>
+        <text x="76" y="218.9">$260</text>
+        <text x="76" y="275.7">$180</text>
+        <text x="76" y="332.4">$100</text>
       </g>
 
-      <!-- Shaded Chronological Validation Split (80/20: 2024-09-09 -> 2025-10-01) -->
-      <rect x="596" y="132" width="238" height="176" fill="#EAB354" fill-opacity="0.065" />
-      <line x1="596" y1="132" x2="596" y2="308" stroke="#EAB354" stroke-opacity="0.82" stroke-width="1.4" stroke-dasharray="5 4" />
-      <text x="605" y="146" fill="#F6CE80" font-family="'SF Mono', monospace" font-size="10" font-weight="600">VAL SPLIT (2024-09-09)</text>
+      <!-- Exact Chronological Validation Split (Row 1222 / 1499 = 81.52%, Date 2024-09-09) -->
+      <rect x="695.8" y="142" width="138.2" height="194" fill="#EAB354" fill-opacity="0.07" />
+      <line x1="695.8" y1="142" x2="695.8" y2="336" stroke="#EAB354" stroke-opacity="0.86" stroke-width="1.4" stroke-dasharray="5 4" />
+      <text x="688.8" y="156" text-anchor="end" fill="#F6CE80" font-family="'SF Mono', monospace" font-size="9.8" font-weight="600">VAL SPLIT (2024-09-09)</text>
 
-      <!-- Synthetic Price Area Fill -->
-      <path d="M84 282 L134 268 L184 274 L234 252 L284 238 L334 254 L384 226 L434 236 L484 214 L534 224 L584 246 L634 218 L684 188 L718 158 L748 184 L782 222 L808 212 L832 238 L832 308 L84 308 Z" fill="url(#priceArea)" />
+      <!-- Exact Data-Derived Price Area, EMA50 (row 49..1499), EMA20 (row 19..1499), Close (row 0..1499) -->
+      <path d="M86.0 316.3 L88.5 308.7 L99.5 309.4 L103.5 316.0 L109.0 321.8 L114.4 311.0 L116.4 316.2 L125.4 300.6 L133.9 302.8 L135.4 296.2 L136.4 300.0 L145.4 287.9 L148.4 302.6 L153.9 285.2 L159.9 280.1 L162.8 289.1 L171.8 268.2 L174.3 288.7 L176.3 290.0 L177.3 281.4 L186.3 277.0 L195.3 294.9 L199.3 283.6 L204.3 294.8 L209.8 297.1 L215.2 291.0 L221.7 285.0 L223.7 291.8 L229.2 283.7 L234.2 294.6 L236.2 295.7 L239.7 285.3 L245.7 286.8 L251.7 270.4 L255.7 277.9 L261.6 287.6 L267.1 280.0 L272.1 257.5 L280.6 271.9 L284.1 280.1 L286.6 276.7 L292.1 300.7 L297.6 290.9 L303.6 314.7 L311.0 317.6 L313.0 310.5 L320.0 302.4 L322.0 320.5 L328.0 304.0 L333.5 320.3 L337.0 318.7 L341.5 292.5 L350.5 296.0 L355.0 307.6 L357.5 318.5 L364.9 303.9 L367.4 290.6 L372.4 306.4 L379.9 277.0 L381.4 289.9 L386.4 285.0 L392.4 306.6 L397.9 312.6 L401.9 284.9 L405.4 297.4 L414.8 316.1 L422.3 302.4 L424.8 317.0 L428.3 310.4 L432.3 320.3 L442.3 314.2 L443.3 320.1 L449.3 310.2 L453.8 327.4 L455.3 324.4 L463.2 319.0 L468.2 323.4 L474.7 315.0 L479.7 319.1 L484.7 315.4 L489.7 308.6 L493.2 318.6 L495.2 313.1 L498.2 301.9 L506.7 305.6 L510.6 295.9 L515.6 297.1 L521.1 303.0 L526.1 303.8 L532.6 297.9 L539.6 303.7 L543.1 291.5 L545.1 290.2 L550.1 296.3 L558.6 297.4 L564.5 290.1 L570.0 289.9 L573.5 285.8 L580.0 279.5 L582.5 290.2 L587.0 285.4 L588.5 281.5 L595.0 283.6 L597.5 295.7 L605.5 288.5 L612.9 305.6 L617.9 305.5 L624.4 299.0 L624.9 298.4 L629.9 289.6 L638.9 298.5 L644.4 291.6 L650.9 294.2 L653.4 284.6 L654.9 278.9 L659.4 302.8 L664.8 291.3 L670.8 307.0 L674.8 304.1 L684.3 293.8 L684.8 293.7 L686.3 280.4 L694.8 289.1 L695.8 284.2 L701.8 267.3 L709.3 266.6 L710.7 272.6 L720.2 272.9 L724.2 253.8 L725.2 256.5 L733.7 225.0 L736.2 210.0 L742.7 235.0 L746.7 227.4 L754.2 205.6 L755.2 212.9 L764.1 160.0 L764.6 159.5 L774.1 206.7 L775.6 212.4 L784.1 187.3 L784.6 186.6 L792.1 202.9 L795.1 193.6 L802.1 227.2 L804.6 226.1 L808.6 240.3 L818.5 235.4 L822.0 212.1 L826.5 204.6 L834.0 226.4 L834.0 336.0 L86.0 336.0 Z" fill="url(#priceArea)" />
+      <path d="M110.5 314.9 L112.4 315.2 L121.9 313.4 L122.4 313.1 L133.9 305.8 L134.4 305.6 L145.9 298.8 L146.4 298.5 L157.9 292.9 L158.4 292.5 L169.8 287.8 L170.3 287.5 L173.3 284.8 L183.3 284.8 L188.3 283.3 L194.8 284.6 L206.3 287.7 L206.8 287.9 L216.7 290.7 L218.7 290.6 L230.2 288.8 L232.7 288.4 L237.7 289.9 L243.2 289.0 L254.7 282.7 L257.7 282.1 L263.6 283.5 L267.1 282.4 L278.6 274.8 L279.1 274.9 L290.6 279.6 L291.1 280.1 L302.6 292.2 L303.1 292.9 L315.0 305.9 L315.5 306.0 L325.5 309.5 L328.0 309.1 L338.5 311.9 L339.5 311.5 L351.0 305.5 L353.5 304.3 L361.9 308.4 L363.4 308.3 L375.4 302.1 L375.9 301.2 L387.4 292.7 L387.9 292.8 L399.4 300.9 L400.4 301.0 L405.4 298.0 L411.8 300.7 L421.3 305.5 L423.8 305.7 L435.3 311.6 L435.8 311.8 L447.8 314.3 L450.3 313.9 L453.8 315.3 L459.8 317.7 L460.2 317.9 L471.7 319.6 L473.2 319.8 L483.7 318.4 L484.2 318.3 L492.2 315.6 L496.2 315.5 L508.2 308.7 L508.7 308.4 L520.1 303.3 L520.6 303.2 L532.1 302.0 L532.6 301.8 L544.1 300.0 L544.6 299.7 L556.1 296.4 L559.1 296.4 L568.0 292.9 L568.5 292.7 L580.5 288.4 L581.0 288.3 L592.5 286.1 L595.0 285.8 L604.5 289.0 L605.5 289.1 L616.4 296.8 L616.9 297.1 L623.9 299.7 L628.9 298.6 L638.4 296.0 L641.4 296.1 L652.9 293.0 L656.4 291.1 L662.3 293.4 L665.3 293.0 L676.8 299.1 L679.3 299.5 L688.8 295.3 L689.3 294.9 L695.8 291.7 L700.8 286.8 L701.3 286.1 L713.2 275.8 L713.7 275.5 L725.2 268.3 L725.7 267.6 L737.2 245.3 L737.7 244.5 L749.2 231.5 L749.7 231.0 L761.1 211.4 L761.6 209.9 L764.6 200.5 L772.6 190.6 L774.1 192.1 L783.1 198.6 L791.1 196.2 L797.6 197.0 L798.1 197.2 L809.5 215.5 L810.0 216.3 L819.0 224.4 L822.0 222.8 L832.0 217.0 L834.0 217.8" stroke="#A78BFA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-opacity="0.85" />
+      <path d="M95.5 311.9 L101.0 311.1 L107.0 313.8 L111.4 317.1 L119.4 313.9 L119.9 313.5 L131.9 301.9 L133.9 301.9 L143.9 296.2 L144.4 295.6 L156.4 289.6 L156.9 289.3 L168.8 285.7 L169.3 285.2 L172.8 279.7 L184.8 284.2 L188.3 281.4 L193.8 284.4 L205.8 289.4 L206.3 289.7 L213.2 293.2 L218.2 291.6 L229.7 287.9 L232.7 287.2 L237.2 291.0 L243.2 288.5 L254.7 278.0 L255.7 278.0 L263.1 283.7 L267.6 280.9 L273.1 269.5 L280.6 273.0 L291.6 285.6 L292.1 287.0 L304.1 303.4 L304.6 304.5 L314.5 312.8 L320.5 310.1 L324.0 313.7 L338.5 313.9 L341.0 309.4 L341.5 307.8 L353.5 300.9 L354.0 301.5 L360.9 310.7 L366.4 305.6 L377.9 293.4 L386.4 288.0 L390.4 294.2 L390.9 294.8 L398.9 305.7 L404.9 296.8 L414.8 307.6 L422.8 306.9 L427.3 311.6 L428.3 311.6 L439.3 315.9 L443.8 316.3 L450.3 314.2 L452.3 314.9 L453.8 317.1 L461.2 320.9 L470.7 320.9 L476.7 318.7 L477.2 318.5 L488.7 315.5 L489.2 315.1 L501.2 308.1 L502.2 307.6 L512.1 301.5 L514.1 301.6 L519.1 300.3 L528.6 301.9 L534.6 300.1 L540.6 301.5 L549.1 295.2 L559.6 295.4 L562.5 293.9 L563.0 293.6 L574.5 288.2 L575.5 288.0 L580.0 285.5 L591.5 284.3 L600.0 289.5 L601.5 289.5 L611.9 298.2 L612.4 298.8 L622.4 303.3 L624.9 301.9 L636.9 294.7 L639.9 295.4 L648.9 292.7 L655.9 288.0 L661.3 293.8 L664.8 292.9 L673.8 301.7 L676.3 302.5 L685.8 295.8 L686.3 294.4 L695.8 288.1 L698.3 285.6 L698.8 284.6 L709.7 270.6 L711.2 270.8 L722.7 267.0 L723.2 266.0 L735.2 238.0 L735.7 236.4 L747.7 225.0 L748.2 223.8 L759.6 201.8 L760.1 199.8 L764.6 181.1 L767.6 175.5 L772.6 181.6 L783.1 201.5 L785.1 197.4 L790.6 195.3 L797.1 197.1 L809.1 226.1 L818.5 231.8 L821.5 225.9 L822.0 224.6 L828.5 213.7 L834.0 217.2" stroke="#56B4E9" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M86.0 316.3 L88.5 308.7 L99.5 309.4 L103.5 316.0 L109.0 321.8 L114.4 311.0 L116.4 316.2 L125.4 300.6 L133.9 302.8 L135.4 296.2 L136.4 300.0 L145.4 287.9 L148.4 302.6 L153.9 285.2 L159.9 280.1 L162.8 289.1 L171.8 268.2 L174.3 288.7 L176.3 290.0 L177.3 281.4 L186.3 277.0 L195.3 294.9 L199.3 283.6 L204.3 294.8 L209.8 297.1 L215.2 291.0 L221.7 285.0 L223.7 291.8 L229.2 283.7 L234.2 294.6 L236.2 295.7 L239.7 285.3 L245.7 286.8 L251.7 270.4 L255.7 277.9 L261.6 287.6 L267.1 280.0 L272.1 257.5 L280.6 271.9 L284.1 280.1 L286.6 276.7 L292.1 300.7 L297.6 290.9 L303.6 314.7 L311.0 317.6 L313.0 310.5 L320.0 302.4 L322.0 320.5 L328.0 304.0 L333.5 320.3 L337.0 318.7 L341.5 292.5 L350.5 296.0 L355.0 307.6 L357.5 318.5 L364.9 303.9 L367.4 290.6 L372.4 306.4 L379.9 277.0 L381.4 289.9 L386.4 285.0 L392.4 306.6 L397.9 312.6 L401.9 284.9 L405.4 297.4 L414.8 316.1 L422.3 302.4 L424.8 317.0 L428.3 310.4 L432.3 320.3 L442.3 314.2 L443.3 320.1 L449.3 310.2 L453.8 327.4 L455.3 324.4 L463.2 319.0 L468.2 323.4 L474.7 315.0 L479.7 319.1 L484.7 315.4 L489.7 308.6 L493.2 318.6 L495.2 313.1 L498.2 301.9 L506.7 305.6 L510.6 295.9 L515.6 297.1 L521.1 303.0 L526.1 303.8 L532.6 297.9 L539.6 303.7 L543.1 291.5 L545.1 290.2 L550.1 296.3 L558.6 297.4 L564.5 290.1 L570.0 289.9 L573.5 285.8 L580.0 279.5 L582.5 290.2 L587.0 285.4 L588.5 281.5 L595.0 283.6 L597.5 295.7 L605.5 288.5 L612.9 305.6 L617.9 305.5 L624.4 299.0 L624.9 298.4 L629.9 289.6 L638.9 298.5 L644.4 291.6 L650.9 294.2 L653.4 284.6 L654.9 278.9 L659.4 302.8 L664.8 291.3 L670.8 307.0 L674.8 304.1 L684.3 293.8 L684.8 293.7 L686.3 280.4 L694.8 289.1 L695.8 284.2 L701.8 267.3 L709.3 266.6 L710.7 272.6 L720.2 272.9 L724.2 253.8 L725.2 256.5 L733.7 225.0 L736.2 210.0 L742.7 235.0 L746.7 227.4 L754.2 205.6 L755.2 212.9 L764.1 160.0 L764.6 159.5 L774.1 206.7 L775.6 212.4 L784.1 187.3 L784.6 186.6 L792.1 202.9 L795.1 193.6 L802.1 227.2 L804.6 226.1 L808.6 240.3 L818.5 235.4 L822.0 212.1 L826.5 204.6 L834.0 226.4" stroke="#F1EDE5" stroke-width="1.85" stroke-linejoin="round" fill="none" />
 
-      <!-- EMA50 (Violet, smooth lagging average below peak) -->
-      <path d="M84 285 L154 276 L234 264 L314 252 L394 242 L474 231 L554 236 L634 228 L694 206 L734 196 L782 214 L832 227" stroke="#A78BFA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-opacity="0.88" />
-      <!-- EMA20 (Sky, faster lagging average below peak) -->
-      <path d="M84 282 L154 272 L234 258 L314 246 L394 234 L474 223 L554 234 L634 222 L694 192 L728 176 L764 196 L798 216 L832 226" stroke="#56B4E9" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-      <!-- Close Price Line (Warm Ivory) -->
-      <path d="M84 282 L134 268 L184 274 L234 252 L284 238 L334 254 L384 226 L434 236 L484 214 L534 224 L584 246 L634 218 L684 188 L718 162 L748 188 L782 222 L808 212 L832 238" stroke="#F1EDE5" stroke-width="2.1" stroke-linejoin="round" fill="none" />
+      <!-- Exact Peak Marker (Row 1360: 2025-03-20, $338.84) & Final Close Dot (Row 1499: 2025-10-01, $244.49) -->
+      <circle cx="764.6" cy="159.5" r="4.2" fill="#EBD0A4" stroke="#0B0D11" stroke-width="1.5" />
+      <circle cx="834.0" cy="226.4" r="4.6" fill="#E86378" stroke="#F1EDE5" stroke-width="1.5" />
 
-      <!-- Peak Marker ($338.84) & Final Close Dot ($244.49) -->
-      <circle cx="718" cy="162" r="4" fill="#EBD0A4" stroke="#0B0D11" stroke-width="1.5" />
-      <circle cx="832" cy="238" r="4.5" fill="#E86378" stroke="#F1EDE5" stroke-width="1.5" />
-
-      <!-- Synthetic Volume Bars -->
-      <g fill-opacity="0.52">
-        <rect x="92" y="330" width="7" height="22" fill="#34D399" />
-        <rect x="116" y="324" width="7" height="28" fill="#34D399" />
-        <rect x="140" y="334" width="7" height="18" fill="#E86378" />
-        <rect x="164" y="328" width="7" height="24" fill="#34D399" />
-        <rect x="188" y="322" width="7" height="30" fill="#E86378" />
-        <rect x="212" y="332" width="7" height="20" fill="#34D399" />
-        <rect x="236" y="318" width="7" height="34" fill="#34D399" />
-        <rect x="260" y="326" width="7" height="26" fill="#34D399" />
-        <rect x="284" y="333" width="7" height="19" fill="#E86378" />
-        <rect x="308" y="320" width="7" height="32" fill="#E86378" />
-        <rect x="332" y="329" width="7" height="23" fill="#34D399" />
-        <rect x="356" y="324" width="7" height="28" fill="#34D399" />
-        <rect x="380" y="316" width="7" height="36" fill="#34D399" />
-        <rect x="404" y="327" width="7" height="25" fill="#E86378" />
-        <rect x="428" y="331" width="7" height="21" fill="#34D399" />
-        <rect x="452" y="322" width="7" height="30" fill="#34D399" />
-        <rect x="476" y="329" width="7" height="23" fill="#E86378" />
-        <rect x="500" y="318" width="7" height="34" fill="#34D399" />
-        <rect x="524" y="326" width="7" height="26" fill="#E86378" />
-        <rect x="548" y="334" width="7" height="18" fill="#E86378" />
-        <rect x="572" y="321" width="7" height="31" fill="#E86378" />
-        <rect x="596" y="314" width="7" height="38" fill="#EAB354" />
-        <rect x="620" y="324" width="7" height="28" fill="#34D399" />
-        <rect x="644" y="319" width="7" height="33" fill="#34D399" />
-        <rect x="668" y="312" width="7" height="40" fill="#34D399" />
-        <rect x="692" y="316" width="7" height="36" fill="#34D399" />
-        <rect x="716" y="310" width="7" height="42" fill="#34D399" />
-        <rect x="740" y="322" width="7" height="30" fill="#E86378" />
-        <rect x="764" y="318" width="7" height="34" fill="#E86378" />
-        <rect x="788" y="328" width="7" height="24" fill="#34D399" />
-        <rect x="812" y="325" width="7" height="27" fill="#E86378" />
+      <!-- Exact Data-Derived Volume Bars (60 Chronological Bins of 25 Sessions, Mean Volume) -->
+      <g fill-opacity="0.54">
+        <rect x="88.7" y="370.9" width="6.5" height="21.1" fill="#34D399" />
+        <rect x="101.2" y="370.9" width="6.5" height="21.1" fill="#E86378" />
+        <rect x="113.7" y="367.7" width="6.5" height="24.3" fill="#34D399" />
+        <rect x="126.2" y="367.9" width="6.5" height="24.1" fill="#34D399" />
+        <rect x="138.6" y="370.6" width="6.5" height="21.4" fill="#E86378" />
+        <rect x="151.1" y="369.3" width="6.5" height="22.7" fill="#34D399" />
+        <rect x="163.6" y="368.5" width="6.5" height="23.5" fill="#34D399" />
+        <rect x="176.1" y="369.4" width="6.5" height="22.6" fill="#E86378" />
+        <rect x="188.5" y="368.1" width="6.5" height="23.9" fill="#E86378" />
+        <rect x="201.0" y="369.0" width="6.5" height="23.0" fill="#E86378" />
+        <rect x="213.5" y="372.7" width="6.5" height="19.3" fill="#34D399" />
+        <rect x="226.0" y="369.3" width="6.5" height="22.7" fill="#E86378" />
+        <rect x="238.4" y="373.0" width="6.5" height="19.0" fill="#34D399" />
+        <rect x="250.9" y="369.6" width="6.5" height="22.4" fill="#E86378" />
+        <rect x="263.4" y="354.3" width="6.5" height="37.7" fill="#34D399" />
+        <rect x="275.9" y="354.6" width="6.5" height="37.4" fill="#E86378" />
+        <rect x="288.3" y="353.8" width="6.5" height="38.2" fill="#E86378" />
+        <rect x="300.8" y="356.1" width="6.5" height="35.9" fill="#E86378" />
+        <rect x="313.3" y="353.0" width="6.5" height="39.0" fill="#E86378" />
+        <rect x="325.8" y="353.8" width="6.5" height="38.2" fill="#34D399" />
+        <rect x="338.2" y="346.0" width="6.5" height="46.0" fill="#34D399" />
+        <rect x="350.7" y="354.3" width="6.5" height="37.7" fill="#E86378" />
+        <rect x="363.2" y="353.2" width="6.5" height="38.8" fill="#34D399" />
+        <rect x="375.7" y="349.1" width="6.5" height="42.9" fill="#34D399" />
+        <rect x="388.1" y="349.2" width="6.5" height="42.8" fill="#E86378" />
+        <rect x="400.6" y="350.2" width="6.5" height="41.8" fill="#34D399" />
+        <rect x="413.1" y="354.0" width="6.5" height="38.0" fill="#34D399" />
+        <rect x="425.6" y="354.4" width="6.5" height="37.6" fill="#E86378" />
+        <rect x="438.0" y="375.4" width="6.5" height="16.6" fill="#34D399" />
+        <rect x="450.5" y="373.9" width="6.5" height="18.1" fill="#E86378" />
+        <rect x="463.0" y="376.0" width="6.5" height="16.0" fill="#E86378" />
+        <rect x="475.5" y="376.5" width="6.5" height="15.5" fill="#34D399" />
+        <rect x="487.9" y="373.6" width="6.5" height="18.4" fill="#34D399" />
+        <rect x="500.4" y="375.8" width="6.5" height="16.2" fill="#34D399" />
+        <rect x="512.9" y="375.0" width="6.5" height="17.0" fill="#E86378" />
+        <rect x="525.4" y="375.3" width="6.5" height="16.7" fill="#34D399" />
+        <rect x="537.8" y="375.7" width="6.5" height="16.3" fill="#34D399" />
+        <rect x="550.3" y="376.5" width="6.5" height="15.5" fill="#E86378" />
+        <rect x="562.8" y="375.8" width="6.5" height="16.2" fill="#34D399" />
+        <rect x="575.3" y="372.5" width="6.5" height="19.5" fill="#34D399" />
+        <rect x="587.7" y="376.1" width="6.5" height="15.9" fill="#E86378" />
+        <rect x="600.2" y="372.6" width="6.5" height="19.4" fill="#E86378" />
+        <rect x="612.7" y="375.6" width="6.5" height="16.4" fill="#E86378" />
+        <rect x="625.2" y="375.2" width="6.5" height="16.8" fill="#34D399" />
+        <rect x="637.6" y="364.4" width="6.5" height="27.6" fill="#34D399" />
+        <rect x="650.1" y="361.7" width="6.5" height="30.3" fill="#E86378" />
+        <rect x="662.6" y="358.8" width="6.5" height="33.2" fill="#34D399" />
+        <rect x="675.1" y="362.9" width="6.5" height="29.1" fill="#34D399" />
+        <rect x="687.5" y="362.3" width="6.5" height="29.7" fill="#34D399" />
+        <rect x="700.0" y="366.0" width="6.5" height="26.0" fill="#34D399" />
+        <rect x="712.5" y="361.5" width="6.5" height="30.5" fill="#34D399" />
+        <rect x="725.0" y="363.3" width="6.5" height="28.7" fill="#34D399" />
+        <rect x="737.4" y="359.1" width="6.5" height="32.9" fill="#34D399" />
+        <rect x="749.9" y="361.5" width="6.5" height="30.5" fill="#34D399" />
+        <rect x="762.4" y="361.7" width="6.5" height="30.3" fill="#34D399" />
+        <rect x="774.9" y="363.4" width="6.5" height="28.6" fill="#34D399" />
+        <rect x="787.3" y="366.8" width="6.5" height="25.2" fill="#E86378" />
+        <rect x="799.8" y="365.4" width="6.5" height="26.6" fill="#E86378" />
+        <rect x="812.3" y="364.7" width="6.5" height="27.3" fill="#34D399" />
+        <rect x="824.8" y="363.6" width="6.5" height="28.4" fill="#E86378" />
       </g>
-      <text x="86" y="362" fill="#758D92" font-family="'SF Mono', monospace" font-size="9.5">2020-01-02</text>
-      <text x="456" y="362" text-anchor="middle" fill="#758D92" font-family="'SF Mono', monospace" font-size="9.5">TRAIN SPLIT (80%)</text>
-      <text x="832" y="362" text-anchor="end" fill="#758D92" font-family="'SF Mono', monospace" font-size="9.5">2025-10-01</text>
+      <text x="86" y="408" fill="#758D92" font-family="'SF Mono', monospace" font-size="10">2020-01-02</text>
+      <text x="390.9" y="408" text-anchor="middle" fill="#758D92" font-family="'SF Mono', monospace" font-size="10">TRAIN (1,113 SEQ)</text>
+      <text x="834" y="408" text-anchor="end" fill="#758D92" font-family="'SF Mono', monospace" font-size="10">2025-10-01</text>
     </g>
 
-    <!-- 3B. LOWER-LEFT CARD: Synchronized 6-Indicator Stack -->
-    <g id="hero-indicators" filter="url(#shadowSoft)" transform="translate(662, 512)">
-      <rect x="0" y="0" width="426" height="190" rx="18" fill="url(#cardSurface)" stroke="#F1EDE5" stroke-opacity="0.12" stroke-width="1.3" />
-      <text x="22" y="32" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.4">6 DETERMINISTIC INDICATORS</text>
-      <text x="22" y="56" fill="#F1EDE5" font-family="'SF Pro Display', sans-serif" font-size="18" font-weight="700">RSI(14) · MACD · OBV</text>
+    <!-- 3B. LOWER-LEFT CARD: Data-Derived 1Y RSI(14) & Latest Indicators -->
+    <g id="hero-indicators" filter="url(#shadowSoft)" transform="translate(658, 574)">
+      <rect x="0" y="0" width="428" height="218" rx="18" fill="url(#cardSurface)" stroke="#F1EDE5" stroke-opacity="0.12" stroke-width="1.3" />
+      <text x="24" y="34" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600" letter-spacing="1.4">TECHNICAL INDICATORS · 1Y RSI(14)</text>
+      <text x="24" y="60" fill="#F1EDE5" font-family="'SF Pro Display', sans-serif" font-size="19" font-weight="700">RSI(14) · MACD · OBV</text>
 
-      <!-- Mini RSI Plot -->
-      <rect x="22" y="70" width="382" height="62" rx="10" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.07" />
-      <line x1="32" y1="86" x2="394" y2="86" stroke="#E86378" stroke-opacity="0.45" stroke-dasharray="4 4" />
-      <line x1="32" y1="116" x2="394" y2="116" stroke="#34D399" stroke-opacity="0.45" stroke-dasharray="4 4" />
-      <path d="M36 106 L74 96 L112 102 L150 90 L188 84 L226 98 L264 88 L302 108 L340 112 L390 110" stroke="#56B4E9" stroke-width="1.8" fill="none" />
-      <text x="388" y="83" text-anchor="end" fill="#F59AA8" font-family="'SF Mono', monospace" font-size="9">70</text>
-      <text x="388" y="127" text-anchor="end" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="9">30</text>
+      <!-- Exact 1Y RSI(14) Plot (252 Sessions: 2024-10-15 -> 2025-10-01, 0-100 Scale) -->
+      <rect x="24" y="76" width="380" height="74" rx="10" fill="#0B0D11" stroke="#F1EDE5" stroke-opacity="0.07" />
+      <line x1="34" y1="100.6" x2="394" y2="100.6" stroke="#E86378" stroke-opacity="0.45" stroke-dasharray="4 4" />
+      <line x1="34" y1="125.4" x2="394" y2="125.4" stroke="#34D399" stroke-opacity="0.45" stroke-dasharray="4 4" />
+      <path d="M36.0 104.3 L37.4 104.2 L41.5 113.4 L45.7 111.1 L49.9 108.3 L56.8 104.3 L59.6 110.1 L61.0 112.6 L67.9 118.4 L69.3 107.9 L76.2 99.5 L79.0 98.2 L81.8 103.0 L87.3 96.5 L92.8 91.9 L94.2 91.7 L99.8 109.1 L105.3 98.2 L108.1 106.4 L112.3 97.4 L117.8 108.7 L120.6 107.1 L122.0 110.3 L130.3 115.9 L134.4 105.3 L135.8 104.6 L141.4 112.9 L145.5 105.3 L151.1 111.8 L156.6 107.3 L158.0 114.5 L164.9 109.6 L167.7 102.4 L173.3 100.5 L176.0 104.0 L177.4 102.5 L184.4 98.2 L185.7 97.1 L187.1 101.6 L194.1 100.9 L201.0 112.7 L203.8 110.1 L206.5 117.6 L213.5 113.0 L217.6 123.1 L221.8 125.0 L225.9 119.8 L227.3 120.4 L230.1 117.0 L235.6 121.3 L238.4 113.3 L246.7 105.6 L249.5 110.5 L253.7 110.6 L259.2 113.5 L262.0 109.8 L267.5 118.2 L268.9 117.0 L275.9 110.7 L277.2 111.6 L284.2 117.1 L288.3 125.2 L289.7 119.0 L295.3 126.9 L300.8 119.0 L306.4 121.6 L309.1 126.5 L313.3 125.3 L317.5 121.4 L318.8 119.2 L321.6 116.7 L327.2 119.9 L334.1 113.6 L341.0 118.7 L342.4 108.7 L343.8 107.4 L350.7 100.6 L356.3 106.3 L357.7 101.2 L363.2 101.0 L366.0 108.9 L368.7 106.3 L375.7 114.5 L378.5 112.7 L384.0 120.3" stroke="#56B4E9" stroke-width="1.75" stroke-linejoin="round" fill="none" />
+      <text x="392" y="97.1" text-anchor="end" fill="#F59AA8" font-family="'SF Mono', monospace" font-size="9">70</text>
+      <text x="392" y="136.4" text-anchor="end" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="9">30</text>
 
-      <!-- Exact Grounded Latest Indicator Readouts -->
-      <g transform="translate(22, 144)">
-        <rect x="0" y="0" width="122" height="30" rx="8" fill="#0E141C" stroke="#56B4E9" stroke-opacity="0.34" />
-        <text x="61" y="19" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">RSI 38.26</text>
+      <g transform="translate(24, 164)">
+        <rect x="0" y="0" width="120" height="32" rx="8" fill="#0E141C" stroke="#56B4E9" stroke-opacity="0.34" />
+        <text x="60" y="20" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="11" font-weight="600">RSI 38.26</text>
 
-        <rect x="130" y="0" width="124" height="30" rx="8" fill="#0E141C" stroke="#34D399" stroke-opacity="0.34" />
-        <text x="192" y="19" text-anchor="middle" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">MACD -1.47</text>
+        <rect x="130" y="0" width="122" height="32" rx="8" fill="#0E141C" stroke="#34D399" stroke-opacity="0.34" />
+        <text x="191" y="20" text-anchor="middle" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="11" font-weight="600">MACD -1.47</text>
 
-        <rect x="262" y="0" width="120" height="30" rx="8" fill="#0E141C" stroke="#A78BFA" stroke-opacity="0.34" />
-        <text x="322" y="19" text-anchor="middle" fill="#C4B5FD" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">OBV 3.90B</text>
-      </g>
-    </g>
-
-    <!-- 3C. LOWER-RIGHT CARD: Leak-Free Held-Out Baseline Comparison -->
-    <g id="hero-baselines" filter="url(#shadowSoft)" transform="translate(1108, 512)">
-      <rect x="0" y="0" width="428" height="190" rx="18" fill="url(#cardSurface)" stroke="#F1EDE5" stroke-opacity="0.12" stroke-width="1.3" />
-      <text x="22" y="32" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.4">PART A · 278D HELD-OUT SPLIT</text>
-      <text x="22" y="56" fill="#F1EDE5" font-family="'SF Pro Display', sans-serif" font-size="18" font-weight="700">Leak-Free Baselines</text>
-
-      <!-- Bar 1: Naive Persistence ($5.83 RMSE) -->
-      <g transform="translate(22, 74)">
-        <text x="0" y="12" fill="#E6E1D7" font-family="'SF Pro Text', sans-serif" font-size="12" font-weight="600">Naive Persistence (y[t-1])</text>
-        <text x="384" y="12" text-anchor="end" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="12" font-weight="700">$5.83 RMSE</text>
-        <rect x="0" y="20" width="384" height="10" rx="5" fill="#0B0D11" />
-        <rect x="0" y="20" width="144" height="10" rx="5" fill="#34D399" />
-      </g>
-
-      <!-- Bar 2: Lagged EMA20 ($14.65 RMSE) -->
-      <g transform="translate(22, 114)">
-        <text x="0" y="12" fill="#E6E1D7" font-family="'SF Pro Text', sans-serif" font-size="12" font-weight="600">Lagged EMA20 Reference</text>
-        <text x="384" y="12" text-anchor="end" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="12" font-weight="700">$14.65 RMSE</text>
-        <rect x="0" y="20" width="384" height="10" rx="5" fill="#0B0D11" />
-        <rect x="0" y="20" width="356" height="10" rx="5" fill="#56B4E9" />
-      </g>
-
-      <!-- Explicit Scientific Honesty Row -->
-      <g transform="translate(22, 152)">
-        <rect x="0" y="0" width="384" height="26" rx="8" fill="#1F1910" stroke="#EAB354" stroke-opacity="0.45" />
-        <text x="14" y="17" fill="#F6CE80" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600">NEURAL NET ON SYNTH-EQ: NOT TRAINED · PART B SEPARATE</text>
+        <rect x="262" y="0" width="118" height="32" rx="8" fill="#0E141C" stroke="#A78BFA" stroke-opacity="0.34" />
+        <text x="321" y="20" text-anchor="middle" fill="#C4B5FD" font-family="'SF Mono', monospace" font-size="11" font-weight="600">OBV 3.90B</text>
       </g>
     </g>
 
-    <!-- 3D. FLOATING BOTTOM TECHNICAL INSPECTOR & REPRODUCIBILITY BAR -->
-    <g id="inspector-bar" filter="url(#shadowSoft)" transform="translate(662, 722)">
-      <rect x="0" y="0" width="874" height="92" rx="18" fill="url(#traceBg)" stroke="#B49A78" stroke-opacity="0.38" stroke-width="1.3" />
-      <circle cx="24" cy="28" r="5" fill="#34D399" />
-      <text x="38" y="32" fill="#9CA3AF" font-family="'SF Mono', monospace" font-size="11" font-weight="600" letter-spacing="1.4">TECHNICAL INSPECTOR · OFFLINE REPRODUCIBLE PIPELINE</text>
-      <rect x="738" y="16" width="114" height="24" rx="12" fill="#0F2D21" stroke="#34D399" stroke-opacity="0.52" />
-      <text x="795" y="32" text-anchor="middle" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="10.5" font-weight="700">TRAIN-ONLY</text>
+    <!-- 3C. LOWER-RIGHT CARD: Exact Proportional Validation Baselines -->
+    <g id="hero-baselines" filter="url(#shadowSoft)" transform="translate(1108, 574)">
+      <rect x="0" y="0" width="428" height="218" rx="18" fill="url(#cardSurface)" stroke="#F1EDE5" stroke-opacity="0.12" stroke-width="1.3" />
+      <text x="24" y="34" fill="#B49A78" font-family="'SF Mono', monospace" font-size="10.5" font-weight="600" letter-spacing="1.4">HELD-OUT 278-DAY SPLIT</text>
+      <text x="24" y="60" fill="#F1EDE5" font-family="'SF Pro Display', sans-serif" font-size="19" font-weight="700">Validation Baselines</text>
 
-      <rect x="20" y="48" width="116" height="28" rx="7" fill="#13222F" stroke="#56B4E9" stroke-opacity="0.52" />
-      <text x="78" y="66" text-anchor="middle" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="11.5" font-weight="700">SEED 20261123</text>
-      <text x="150" y="67" fill="#F1EDE5" font-family="'SF Mono', monospace" font-size="13.5" font-weight="600">generate_synthetic_data.py</text>
-      <text x="392" y="67" fill="#8C94A0" font-family="'SF Mono', monospace" font-size="12.5">→  1,500 rows · 0 NaNs post-warmup · 0 real TSLA</text>
+      <!-- Proportional Bar 1: Naive Persistence ($5.83 RMSE -> 39.78% of Lagged EMA20) -->
+      <g transform="translate(24, 84)">
+        <text x="0" y="13" fill="#E6E1D7" font-family="'SF Pro Text', sans-serif" font-size="13" font-weight="600">Naive Persistence (y[t-1])</text>
+        <text x="380" y="13" text-anchor="end" fill="#6EE7B7" font-family="'SF Mono', monospace" font-size="13" font-weight="700">$5.83 RMSE</text>
+        <rect x="0" y="22" width="380" height="11" rx="5.5" fill="#0B0D11" />
+        <rect x="0" y="22" width="140.0" height="11" rx="5.5" fill="#34D399" />
+      </g>
+
+      <!-- Proportional Bar 2: Lagged EMA20 ($14.65 RMSE) -->
+      <g transform="translate(24, 130)">
+        <text x="0" y="13" fill="#E6E1D7" font-family="'SF Pro Text', sans-serif" font-size="13" font-weight="600">Lagged EMA20 Reference</text>
+        <text x="380" y="13" text-anchor="end" fill="#8FD0F5" font-family="'SF Mono', monospace" font-size="13" font-weight="700">$14.65 RMSE</text>
+        <rect x="0" y="22" width="380" height="11" rx="5.5" fill="#0B0D11" />
+        <rect x="0" y="22" width="352.0" height="11" rx="5.5" fill="#56B4E9" />
+      </g>
+
+      <text x="24" y="194" fill="#8C939C" font-family="'SF Mono', monospace" font-size="10.5">Train-only scaling · SYNTH-EQ preview · No live ML</text>
     </g>
   </g>
 </svg>
